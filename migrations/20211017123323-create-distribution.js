@@ -9,16 +9,16 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       date_distribution: {
-        type: DataTypes.DATE,
+        type: Sequelize.DATE,
         allowNull: false,
       },
       quantite_distribuee: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
       },
       commandeId: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "Commandes",
@@ -26,7 +26,7 @@ module.exports = {
         },
       },
       articleId: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "Articles",
