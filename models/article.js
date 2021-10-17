@@ -1,33 +1,26 @@
-"use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Article extends Model {
     static associate(models) {
       // define association here
       Article.belongsTo(models.Article, {
-        as: "Articles",
         foreignKey: "familleId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       Article.hasMany(models.Distribution, {
-        as: "Distributions",
         foreignKey: "articleId",
       });
       Article.hasMany(models.Mouvement_stock, {
-        as: "Mouvement_stocks",
         foreignKey: "articleId",
       });
       Article.hasOne(models.Stock, {
-        as: "Stocks",
         foreignKey: "articleId",
       });
       Article.hasMany(models.Stock_initial, {
-        as: "Stock_initials",
         foreignKey: "articleId",
       });
       Article.hasMany(models.Approvisionnement, {
-        as: "Approvisionnements",
         foreignKey: "articleId",
       });
     }

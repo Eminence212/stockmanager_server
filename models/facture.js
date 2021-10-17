@@ -5,13 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Facture.belongsTo(models.Modere_reglement, {
-        as: "Modere_reglements",
         foreignKey: "reglementId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       Facture.belongsTo(models.Commande, {
-        as: "Commandes",
         foreignKey: "commandeId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",

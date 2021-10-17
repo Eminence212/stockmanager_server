@@ -1,11 +1,9 @@
-"use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Client extends Model {
     static associate(models) {
       // define association here
       Client.hasMany(models.Commande, {
-        as: 'Commandes',
         foreignKey:'clientId'
       })
     }

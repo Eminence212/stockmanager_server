@@ -5,13 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Distribution.belongsTo(models.Article, {
-        as: "Articles",
         foreignKey: "articleId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       Distribution.belongsTo(models.Commande, {
-        as: "Commandes",
         foreignKey: "commandeId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",

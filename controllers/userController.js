@@ -1,18 +1,13 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-// const SendmailTransport = require("nodemailer/lib/sendmail-transport");
-const sendMail = require("./sendMail");
-const { google } = require("googleapis");
-const { OAuth2 } = google.auth;
-const client = new OAuth2(process.env.MAILING_SERVICE_CLIENT_ID);
 
 const { CLIENT_URL } = process.env;
 
 const userController = {
   register: async (req, res) => {
     try {
-      const { name, password } = req.body;
+      const { nom, password } = req.body;
       if (!nom || !password)
         return res
           .status(400)
@@ -56,7 +51,7 @@ const userController = {
       );
       const { nom, password } = user;
 
-      const check = await Models.User.findOne({ where: { nom } });
+      const check = await User.findOne({ where: { nom } });
       if (check)
         return res
           .status(400)
@@ -114,7 +109,7 @@ const userController = {
   forgotPassword: async (req, res) => {
     try {
       const { nom } = req.body;
-      const user = await User.findOne({ where: { non } });
+      const user = await User.findOne({ where: { nom } });
       if (!user)
         return res
           .status(400)

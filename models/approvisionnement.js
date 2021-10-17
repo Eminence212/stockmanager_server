@@ -4,25 +4,21 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Approvisionnement.belongsTo(models.Fournisseur, {
-        as: "Fournisseurs",
         foreignKey: "fournisseurId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       Approvisionnement.belongsTo(models.Article, {
-        as: "Articles",
         foreignKey: "articleId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       Approvisionnement.belongsTo(models.Fournisseur, {
-        as: "Fournisseurs",
         foreignKey: "fournisseurId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
       Approvisionnement.belongsTo(models.Unite, {
-        as: "Unites",
         foreignKey: "uniteId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",

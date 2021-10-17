@@ -9,8 +9,7 @@ app.use(cors());
 app.use(cookieParser());
 
 // Routes
-// app.use("/user", require("./routes/userRouter"));
-// app.use("/api", require("./routes/upload"));
+app.use("/user", require("./routes/userRoute"));
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

@@ -1,11 +1,9 @@
-"use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Monnaie extends Model {
     static associate(models) {
       // define association here
       Monnaie.hasMany(models.Taux_jour, {
-        as: "Taux_jours",
         foreignKey: "monnaieId",
       });
     }

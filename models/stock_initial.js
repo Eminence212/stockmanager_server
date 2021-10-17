@@ -1,11 +1,9 @@
-"use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Stock_initial extends Model {
     static associate(models) {
       // define association here
        Stock_initial.belongsTo(models.Article, {
-         as: "Articles",
          foreignKey: "articleId",
          onDelete: "CASCADE",
          onUpdate: "CASCADE",
