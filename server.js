@@ -10,6 +10,13 @@ app.use(cookieParser());
 
 // Routes
 app.use("/user", require("./routes/userRoute"));
+app.use("/client", require("./routes/clientRoute"));
+app.use("/famille", require("./routes/familleRoute"));
+app.use("/fournisseur", require("./routes/fournisseurRoute"));
+app.use("/mode_reglement", require("./routes/modeReglementRoute"));
+app.use("/monnaie", require("./routes/monnaieRoute"));
+app.use("/status", require("./routes/statusRoute"));
+app.use("/unite", require("./routes/uniteRoute"));
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
