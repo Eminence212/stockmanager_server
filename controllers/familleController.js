@@ -1,4 +1,4 @@
-const { Famille } = require("../models");
+const { Famille, Article } = require("../models");
 const familleController = {
   register: async (req, res) => {
     try {
@@ -20,7 +20,9 @@ const familleController = {
 
   getById: async (req, res) => {
     try {
-      const famille = await Famille.findByPk(req.params.id);
+      const famille = await Famille.findByPk(req.params.id, {
+        include: Article,
+      });
       if (famille) {
         res.json(famille);
       } else {
@@ -32,7 +34,7 @@ const familleController = {
   },
   getAll: async (req, res) => {
     try {
-      const familles = await Famille.findAll();
+      const familles = await Famille.findAll({ include: Article });
       if (familles) {
         res.json(familles);
       } else {
