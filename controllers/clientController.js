@@ -1,4 +1,4 @@
-const { Client } = require("../models");
+const { Client,Commande} = require("../models");
 const clientController = {
   register: async (req, res) => {
     try {
@@ -33,7 +33,10 @@ const clientController = {
   getById: async (req, res) => {
     try {
       const id = req.params.id;
-      const customerById = await Client.findOne({ where: { id: id } });
+      const customerById = await Client.findOne(
+        { where: { id: id } },
+        { include: Commande }
+      );
       if (!customerById) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
@@ -45,7 +48,7 @@ const clientController = {
   },
   getAll: async (req, res) => {
     try {
-      const customers = await Client.findAll();
+      const customers = await Client.findAll({ include: Commande });
       if (!customers) {
         return res.status(404).json({ msg: "Non trouvé" });
       }

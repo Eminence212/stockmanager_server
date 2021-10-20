@@ -1,25 +1,25 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Monnaie extends Model {
+  class Currencies extends Model {
     static associate(models) {
       // define association here
-      Monnaie.hasMany(models.Taux_jour, {
-        foreignKey: "monnaieId",
+      Currencies.hasMany(models.Rates, {
+        foreignKey: "currencieId",
       });
     }
   }
-  Monnaie.init(
+  Currencies.init(
     {
-      libelle_monnaie: {
-        type: DataTypes.STRING(50),
+      name: {
+        type: DataTypes.STRING(100),
         allowNull: false,
         unique: true,
       },
     },
     {
       sequelize,
-      modelName: "Monnaie",
+      modelName: "Currencies",
     }
   );
-  return Monnaie;
+  return Currencies;
 };

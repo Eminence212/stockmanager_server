@@ -1,35 +1,35 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Mouvement_stock extends Model {
+  class Rates extends Model {
     static associate(models) {
       // define association here
-      Mouvement_stock.belongsTo(models.Article, {
-        foreignKey: "articleId",
+      Rates.belongsTo(models.Currencies, {
+        foreignKey: "currencieId",
         onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-      });
+        onUpdate:"CASCADE"
+    })
     }
   }
-  Mouvement_stock.init(
+  Rates.init(
     {
-      date_entree: {
+      dateRate: {
         type: DataTypes.DATE,
         allowNull: false,
+        unique: true,
       },
-      stock_entree: {
-        type: DataTypes.INTEGER,
+      value: {
+        type: DataTypes.FLOAT,
         allowNull: false,
-        defaultValue: 0,
       },
-      articleId: {
+      currencieId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "Mouvement_stock",
+      modelName: "Rates",
     }
   );
-  return Mouvement_stock;
+  return Rates;
 };

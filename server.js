@@ -18,6 +18,7 @@ app.use("/monnaie", require("./routes/monnaieRoute"));
 app.use("/status", require("./routes/statusRoute"));
 app.use("/unite", require("./routes/uniteRoute"));
 app.use("/article", require("./routes/articleRoute"));
+app.use("/commande", require("./routes/commandeRoute"));
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

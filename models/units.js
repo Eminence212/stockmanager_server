@@ -1,16 +1,16 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Unite extends Model {
+  class Units extends Model {
     static associate(models) {
       // define association here
-      Unite.hasMany(models.Approvisionnement, {
-        foreignKey: "uniteId",
+      Units.hasMany(models.Procurements, {
+        foreignKey: "unitId",
       });
     }
   }
-  Unite.init(
+  Units.init(
     {
-      libelle_unite: {
+      name: {
         type: DataTypes.STRING(50),
         allowNull: false,
         unique: true,
@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Unite",
+      modelName: "Units",
     }
   );
-  return Unite;
+  return Units;
 };

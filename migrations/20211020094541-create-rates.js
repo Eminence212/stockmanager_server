@@ -1,17 +1,29 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Statuses", {
+    await queryInterface.createTable("Rates", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      libelle_status: {
-        type: Sequelize.STRING(100),
+      dateRate: {
+        type: Sequelize.DATE,
         allowNull: false,
         unique: true,
+      },
+      value: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      currencieId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Currencies",
+          key:"id"
+        }
       },
       createdAt: {
         allowNull: false,
@@ -24,6 +36,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Statuses");
+    await queryInterface.dropTable("Rates");
   },
 };

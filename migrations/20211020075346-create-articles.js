@@ -1,4 +1,3 @@
-"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("Articles", {
@@ -14,35 +13,35 @@ module.exports = {
         unique: true,
       },
       designation: {
-        type: Sequelize.STRING(100),
+        type: Sequelize.STRING(50),
         allowNull: false,
         unique: true,
       },
-      prix_vente: {
-        type: Sequelize.FLOAT(24, 6),
+      price: {
+        type: Sequelize.FLOAT(24, 2),
         allowNull: false,
-        defaultValue: 0.0,
+        defaultValue: 0,
       },
       tva: {
         type: Sequelize.FLOAT,
         allowNull: false,
-        defaultValue: 0.0,
+        defaultValue: 0,
       },
-      seuil_reapprovisionnement: {
+      threshold: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
       },
-      quante_min: {
+      minQuantity: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         defaultValue: 0,
+        allowNull: false,
       },
-      familleId: {
+      familyId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Familles",
+          model: "Families",
           key: "id",
         },
       },

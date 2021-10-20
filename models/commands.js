@@ -1,29 +1,23 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Commande extends Model {
+  class Commands extends Model {
     static associate(models) {
       // define association here
-      Commande.belongsTo(models.Status, {
+      Commands.belongsTo(models.Status, {
         foreignKey: "statusId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
-      Commande.hasMany(models.Distribution, {
-        foreignKey: "commandeId",
-      });
-      Commande.hasMany(models.Facture, {
-        foreignKey: "commandeId",
-      });
-      Commande.belongsTo(models.Client, {
-        foreignKey: "clientId",
+      Commands.belongsTo(models.Customers, {
+        foreignKey: "customerId",
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
     }
   }
-  Commande.init(
+  Commands.init(
     {
-      date_commande: {
+      dateCommand: {
         type: DataTypes.DATE,
         allowNull: false,
       },
@@ -31,15 +25,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      clientId: {
+      customerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "Commande",
+      modelName: "Commands",
     }
   );
-  return Commande;
+  return Commands;
 };

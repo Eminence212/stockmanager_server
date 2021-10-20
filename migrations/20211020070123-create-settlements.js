@@ -1,15 +1,14 @@
-"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Monnaies", {
+    await queryInterface.createTable("Settlements", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      libelle_monnaie: {
-        type: Sequelize.STRING(50),
+      name: {
+        type: Sequelize.STRING(100),
         allowNull: false,
         unique: true,
       },
@@ -24,6 +23,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Monnaies");
+    await queryInterface.dropTable("Settlements");
   },
 };

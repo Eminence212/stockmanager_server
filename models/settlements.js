@@ -1,29 +1,22 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Client extends Model {
+  class Settlements extends Model {
     static associate(models) {
       // define association here
-      Client.hasMany(models.Commande, {
-        foreignKey:'clientId'
-      })
     }
   }
-  Client.init(
+  Settlements.init(
     {
-      nom: {
+      name: {
         type: DataTypes.STRING(100),
         allowNull: false,
-        unique: true,
-      },
-      contact: {
-        type: DataTypes.STRING(50),
         unique: true,
       },
     },
     {
       sequelize,
-      modelName: "Client",
+      modelName: "Settlements",
     }
   );
-  return Client;
+  return Settlements;
 };

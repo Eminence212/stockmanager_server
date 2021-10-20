@@ -1,4 +1,4 @@
-const { Status } = require("../models");
+const { Status, Commande } = require("../models");
 const statusController = {
   register: async (req, res) => {
     try {
@@ -20,7 +20,9 @@ const statusController = {
 
   getById: async (req, res) => {
     try {
-      const statuss = await Status.findByPk(req.params.id);
+      const statuss = await Status.findByPk(req.params.id, {
+        include: Commande,
+      });
       if (statuss) {
         res.json(statuss);
       } else {
@@ -32,7 +34,7 @@ const statusController = {
   },
   getAll: async (req, res) => {
     try {
-      const statuss = await Status.findAll();
+      const statuss = await Status.findAll({ include: Commande });
       if (statuss) {
         res.json(statuss);
       } else {

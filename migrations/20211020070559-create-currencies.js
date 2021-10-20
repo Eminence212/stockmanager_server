@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Modere_reglements", {
+    await queryInterface.createTable("Currencies", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      libelle_reglement: {
+      name: {
         type: Sequelize.STRING(100),
         allowNull: false,
         unique: true,
@@ -24,6 +24,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Modere_reglements");
-  },
+    await queryInterface.dropTable('Currencies');
+  }
 };

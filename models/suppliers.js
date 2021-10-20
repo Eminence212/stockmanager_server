@@ -1,25 +1,29 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Modere_reglement extends Model {
+  class Suppliers extends Model {
     static associate(models) {
       // define association here
-      Modere_reglement.hasMany(models.Facture, {
-        foreignKey: "reglementId",
+      Suppliers.hasMany(models.Procurements, {
+        foreignKey: "supplierId",
       });
     }
   }
-  Modere_reglement.init(
+  Suppliers.init(
     {
-      libelle_reglement: {
+      name: {
         type: DataTypes.STRING(100),
         allowNull: false,
+        unique: true,
+      },
+      contact: {
+        type: DataTypes.STRING(15),
         unique: true,
       },
     },
     {
       sequelize,
-      modelName: "Modere_reglement",
+      modelName: "Suppliers",
     }
   );
-  return Modere_reglement;
+  return Suppliers;
 };

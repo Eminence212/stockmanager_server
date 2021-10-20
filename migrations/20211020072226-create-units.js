@@ -1,28 +1,16 @@
-"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Taux_jours", {
+    await queryInterface.createTable("Units", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      taux: {
+      name: {
+        type: Sequelize.STRING(50),
         allowNull: false,
-        type: Sequelize.FLOAT(10, 2),
-      },
-      date_taux: {
-        allowNull: false,
-        type: Sequelize.DATE,
-      },
-      monnaieId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Monnaies",
-          key: "id",
-        },
+        unique: true,
       },
       createdAt: {
         allowNull: false,
@@ -35,6 +23,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Taux_jours");
+    await queryInterface.dropTable("Units");
   },
 };

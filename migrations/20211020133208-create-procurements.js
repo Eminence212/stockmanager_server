@@ -1,35 +1,45 @@
-"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Distributions", {
+    await queryInterface.createTable("Procurements", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      date_distribution: {
+      procurementDate: {
         type: Sequelize.DATE,
-        allowNull: false,
       },
-      quantite_distribuee: {
+      folio: Sequelize.STRING(50),
+      supplyQuantity: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         defaultValue: 0,
       },
-      commandeId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Commandes",
-          key: "id",
-        },
+      purchasePrice: {
+        type: Sequelize.FLOAT(24, 2),
+        defaultValue: 0,
       },
       articleId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "Articles",
+          key: "id",
+        },
+      },
+      supplierId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Suppliers",
+          key: "id",
+        },
+      },
+      unitId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Units",
           key: "id",
         },
       },
@@ -44,6 +54,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Distributions");
+    await queryInterface.dropTable("Procurements");
   },
 };
