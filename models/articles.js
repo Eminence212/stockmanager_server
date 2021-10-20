@@ -9,8 +9,11 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
       Articles.hasMany(models.Procurements, {
-        foreignKey:"articleId"
-      })
+        foreignKey: "articleId",
+      });
+      Articles.hasMany(models.Distributions, {
+        foreignKey: "articleId",
+      });
     }
   }
   Articles.init(

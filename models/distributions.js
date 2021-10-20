@@ -1,43 +1,44 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Commands extends Model {
+  class Distributions extends Model {
     static associate(models) {
       // define association here
-      Commands.belongsTo(models.Status, {
-        foreignKey: "statusId",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-      });
-      Commands.belongsTo(models.Customers, {
-        foreignKey: "customerId",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-      });
-      Commands.hasMany(models.Distributions, {
+      Distributions.belongsTo(models.Commands, {
         foreignKey: "commandId",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       });
-     
+      Distributions.belongsTo(models.Articles, {
+        foreignKey: "articleId",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
     }
   }
-  Commands.init(
+  Distributions.init(
     {
-      dateCommand: {
+      dateDescription: {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      statusId: {
+      quantityDistributed: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      commandId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      customerId: {
+      articleId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "Commands",
+      modelName: "Distributions",
     }
   );
-  return Commands;
+  return Distributions;
 };
