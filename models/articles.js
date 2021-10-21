@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       Articles.hasOne(models.Stocks, {
         foreignKey: "articleId",
       });
+        Articles.hasOne(models.Init_stocks, {
+          foreignKey: "articleId",
+        });
     }
   }
   Articles.init(
