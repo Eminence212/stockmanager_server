@@ -1,20 +1,20 @@
-const { Modere_reglement } = require("../models");
+const { Settlements, Invoices } = require("../models");
 
-const modeReglementController = {
+const settlementCtrl = {
   register: async (req, res) => {
     try {
-      const { libelle_reglement } = req.body;
-      if (!libelle_reglement)
+      const { name } = req.body;
+      if (!name)
         return res.status(400).json({ msg: "Veuillez remplir le champ vide." });
-      const reglement = await Modere_reglement.findOne({
-        where: { libelle_reglement },
+      const settlement = await Settlements.findOne({
+        where: { name },
       });
-      if (reglement)
+      if (settlement)
         return res.status(400).json({
-          msg: `Le mode de reglèment : ${reglement.libelle_reglement} existe déjà.`,
+          msg: `Le mode de reglèment : ${settlement.name} existe déjà.`,
         });
 
-      await Modere_reglement.create({ libelle_reglement });
+      await Settlements.create({ name });
       res.json({ msg: "Mode reglèment ajouté avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -22,9 +22,11 @@ const modeReglementController = {
   },
   getById: async (req, res) => {
     try {
-      const reglement = await Modere_reglement.findByPk(req.params.id);
-      if (reglement) {
-        res.json(reglement);
+      const settlement = await Settlements.findByPk(req.params.id, {
+        include: Invoices,
+      });
+      if (settlement) {
+        res.json(settlement);
       } else {
         return res.status(404).json({ msg: "Non trouvé" });
       }
@@ -34,9 +36,9 @@ const modeReglementController = {
   },
   getAll: async (req, res) => {
     try {
-      const reglements = await Modere_reglement.findAll();
-      if (reglements) {
-        res.json(reglements);
+      const settleents = await Settlements.findAll({ include: Invoices });
+      if (settleents) {
+        res.json(settleents);
       } else {
         return res.status(404).json({ msg: "Non trouvé" });
       }
@@ -48,24 +50,21 @@ const modeReglementController = {
   update: async (req, res) => {
     try {
       const id = req.params.id;
-      const { libelle_reglement } = req.body;
-      const reglementById = await Modere_reglement.findOne({
+      const { name } = req.body;
+      const settlementById = await Settlements.findOne({
         where: { id: id },
       });
-      if (!reglementById) {
+      if (!settlementById) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
-      if (!libelle_reglement)
+      if (!name)
         return res.status(400).json({ msg: "Veuillez remplir le champ vide." });
 
-      const reglement = await Modere_reglement.findOne({
-        where: { libelle_reglement },
+      const settlement = await Settlements.findOne({
+        where: { name },
       });
-      if (!reglement)
-        await Modere_reglement.update(
-          { libelle_reglement },
-          { where: { id: id } }
-        );
+      if (!settlement)
+        await Settlements.update({ name }, { where: { id: id } });
       res.json({ msg: "Mise à jour réussie !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -75,21 +74,21 @@ const modeReglementController = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
-      const reglementById = await Modere_reglement.findOne({
+      const settlementById = await Settlements.findOne({
         where: { id: id },
       });
-      if (!reglementById) {
+      if (!settlementById) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
       if (!id)
         return res
           .status(400)
           .json({ msg: "L'identifiant de la famille est vide." });
-      await Modere_reglement.destroy({ where: { id: id } });
+      await Settlements.destroy({ where: { id: id } });
       res.json({ msg: "Supprimée avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
   },
 };
-module.exports = modeReglementController;
+module.exports = settlementCtrl;
