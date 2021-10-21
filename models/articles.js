@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       Articles.hasMany(models.Stock_movements, {
         foreignKey: "articleId",
       });
+      Articles.hasOne(models.Stocks, {
+        foreignKey: "articleId",
+      });
     }
   }
   Articles.init(
