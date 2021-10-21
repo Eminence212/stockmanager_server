@@ -12,7 +12,7 @@ app.use(cookieParser());
 app.use("/user", require("./routes/userRoute"));
 app.use("/customer", require("./routes/customerRoute"));
 app.use("/family", require("./routes/familyRoute"));
-app.use("/fournisseur", require("./routes/fournisseurRoute"));
+app.use("/supplier", require("./routes/supplierRoute"));
 app.use("/mode_reglement", require("./routes/modeReglementRoute"));
 app.use("/monnaie", require("./routes/monnaieRoute"));
 app.use("/status", require("./routes/statusRoute"));
