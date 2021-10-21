@@ -1,29 +1,33 @@
-const { Monnaie } = require("../models");
+const { Currencies, Rates } = require("../models");
 
-const monnaieController = {
+const currencieCtrl = {
   register: async (req, res) => {
     try {
-      const { libelle_monnaie } = req.body;
-      if (!libelle_monnaie)
+      const { name } = req.body;
+      if (!name)
         return res.status(400).json({ msg: "Veuillez remplir le champ vide." });
-      const monnaie = await Monnaie.findOne({ where: { libelle_monnaie } });
-      if (monnaie)
+      const currencie = await Currencies.findOne({
+        where: { name },
+      });
+      if (currencie)
         return res.status(400).json({
-          msg: `La monnaie : ${monnaie.libelle_monnaie} existe déjà.`,
+          msg: `La monnaie : ${currencie.name} existe déjà.`,
         });
 
-      await Monnaie.create({ libelle_monnaie });
+      await Currencies.create({ name });
       res.json({ msg: "Monnaie ajoutée avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
   },
-
   getById: async (req, res) => {
     try {
-      const monnaie = await Monnaie.findByPk(req.params.id);
-      if (monnaie) {
-        res.json(monnaie);
+      const { Currencies, Rates } = require("../models");
+      const currencie = await Currencies.findByPk(req.params.id, {
+        include: Rates,
+      });
+      if (currencie) {
+        res.json(currencie);
       } else {
         return res.status(404).json({ msg: "Non trouvée" });
       }
@@ -33,9 +37,11 @@ const monnaieController = {
   },
   getAll: async (req, res) => {
     try {
-      const monnaies = await Monnaie.findAll();
-      if (monnaies) {
-        res.json(monnaies);
+      const currencies = await Currencies.findAll({
+        include: Rates,
+      });
+      if (currencies) {
+        res.json(currencies);
       } else {
         return res.status(404).json({ msg: "Non trouvée" });
       }
@@ -47,17 +53,18 @@ const monnaieController = {
   update: async (req, res) => {
     try {
       const id = req.params.id;
-      const { libelle_monnaie } = req.body;
-      const monnaieById = await Monnaie.findOne({ where: { id: id } });
-      if (!monnaieById) {
+      const { name } = req.body;
+      const currenciesById = await Currencies.findOne({ where: { id: id } });
+      if (!currenciesById) {
         return res.status(404).json({ msg: "Non trouvée" });
       }
-      if (!libelle_monnaie)
+      if (!name)
         return res.status(400).json({ msg: "Veuillez remplir le champ vide." });
 
-      const monnaie = await Monnaie.findOne({ where: { libelle_monnaie } });
-      if (!monnaie)
-        await Monnaie.update({ libelle_monnaie }, { where: { id: id } });
+      const currencie = await Currencies.findOne({
+        where: { name },
+      });
+      if (!currencie) await Currencies.update({ name }, { where: { id: id } });
       res.json({ msg: "Mise à jour réussie !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -67,19 +74,19 @@ const monnaieController = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
-      const monnaieById = await Monnaie.findOne({ where: { id: id } });
-      if (!monnaieById) {
+      const currencieById = await Currencies.findOne({ where: { id: id } });
+      if (!currencieById) {
         return res.status(404).json({ msg: "Non trouvée" });
       }
       if (!id)
         return res
           .status(400)
           .json({ msg: "L'identifiant de la monnaie est vide." });
-      await Monnaie.destroy({ where: { id: id } });
+      await Currencies.destroy({ where: { id: id } });
       res.json({ msg: "Supprimée avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
   },
 };
-module.exports = monnaieController;
+module.exports = currencieCtrl;

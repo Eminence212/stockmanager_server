@@ -14,7 +14,7 @@ app.use("/customer", require("./routes/customerRoute"));
 app.use("/family", require("./routes/familyRoute"));
 app.use("/supplier", require("./routes/supplierRoute"));
 app.use("/settlement", require("./routes/settlementRoute"));
-app.use("/monnaie", require("./routes/monnaieRoute"));
+app.use("/currencie", require("./routes/currencieRoute"));
 app.use("/status", require("./routes/statusRoute"));
 app.use("/unite", require("./routes/uniteRoute"));
 app.use("/article", require("./routes/articleRoute"));
