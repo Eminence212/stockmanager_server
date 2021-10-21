@@ -45,7 +45,6 @@ const procurementCtrl = {
         include: [{ model: Articles }, { model: Suppliers }],
       });
       if (procurement) {
-        Customers;
         res.json(procurement);
       } else {
         return res.status(404).json({ msg: "Non trouvé" });
@@ -129,10 +128,6 @@ const procurementCtrl = {
       if (!procurementById) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
-      if (id === 0)
-        return res
-          .status(400)
-          .json({ msg: "L'identifiant de l'article est vide." });
       await Procurements.destroy({ where: { id: id } });
       res.json({ msg: "Supprimé avec succès !" });
     } catch (error) {

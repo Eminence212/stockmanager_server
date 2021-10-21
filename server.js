@@ -11,7 +11,7 @@ app.use(cookieParser());
 // Routes
 app.use("/user", require("./routes/userRoute")); //Utilisateur
 app.use("/customer", require("./routes/customerRoute")); //client
-app.use("/family", require("./routes/familyRoute")); //famille
+app.use("/family", require("./routes/familyRoute")); //Famille
 app.use("/supplier", require("./routes/supplierRoute")); //Fournisseur
 app.use("/settlement", require("./routes/settlementRoute")); //Mode règlement
 app.use("/currencie", require("./routes/currencieRoute")); //Monnaie
@@ -21,6 +21,8 @@ app.use("/article", require("./routes/articleRoute")); //Article
 app.use("/command", require("./routes/commandRoute")); //Commande
 app.use("/rate", require("./routes/rateRoute")); //Taux
 app.use("/procurement", require("./routes/procurementRoute")); //Approvisionnement ou Entrée
+app.use("/distribution", require("./routes/distributionRoute")); //Distribution ou Sortie
+app.use("/invoice", require("./routes/invoiceRoute")); //Facture
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
