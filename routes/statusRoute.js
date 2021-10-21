@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const statusController = require("../controllers/statusController");
+const statusCtrl = require("../controllers/statusCtrl");
 const auth = require("../middlewares/auth");
 const authAdmin = require("../middlewares/authAdmin");
 
-router.post("/add", auth, statusController.register);
-router.get("/:id", auth, statusController.getById);
-router.get("/", auth, statusController.getAll);
-router.patch("/update/:id", auth, authAdmin, statusController.update);
-router.delete("/delete/:id", auth, authAdmin, statusController.delete);
+router.post("/add", auth, statusCtrl.register);
+router.get("/:id", auth, statusCtrl.getById);
+router.get("/", auth, statusCtrl.getAll);
+router.patch("/update/:id", auth, authAdmin, statusCtrl.update);
+router.delete("/delete/:id", auth, authAdmin, statusCtrl.delete);
 
 module.exports = router;
