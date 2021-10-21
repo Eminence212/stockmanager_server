@@ -11,7 +11,7 @@ app.use(cookieParser());
 // Routes
 app.use("/user", require("./routes/userRoute"));
 app.use("/customer", require("./routes/customerRoute"));
-app.use("/famille", require("./routes/familleRoute"));
+app.use("/family", require("./routes/familyRoute"));
 app.use("/fournisseur", require("./routes/fournisseurRoute"));
 app.use("/mode_reglement", require("./routes/modeReglementRoute"));
 app.use("/monnaie", require("./routes/monnaieRoute"));
