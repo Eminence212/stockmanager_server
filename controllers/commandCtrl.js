@@ -1,10 +1,10 @@
-const { Commande, Status, Client } = require("../models");
-const commandeController = {
+const { Commands, Status, Customers } = require("../models");
+const commandCtrl = {
   register: async (req, res) => {
     try {
-      const { statusId, clientId } = req.body;
+      const { statusId, customerId } = req.body;
 
-      if (statusId === 0 || clientId == 0)
+      if (statusId === 0 || customerId == 0)
         return res
           .status(400)
           .json({ msg: "Veuillez remplir les champs vide." });
@@ -13,12 +13,16 @@ const commandeController = {
         return res.status(400).json({
           msg: `Le status choisie n'existe pas.`,
         });
-      if (clientId < 0)
+      if (customerId < 0)
         return res.status(400).json({
           msg: `Le client choisie n'existe pas.`,
         });
 
-      await Commande.create({ date_commande: new Date(), statusId, clientId });
+      await Commands.create({
+        dateCommand: new Date(),
+        statusId,
+        customerId,
+      });
       res.json({ msg: "Commande ajoutée avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -26,11 +30,11 @@ const commandeController = {
   },
   getById: async (req, res) => {
     try {
-      const commande = await Commande.findByPk(req.params.id, {
-        include: [{ model: Status }, { model: Client }],
+      const command = await Commands.findByPk(req.params.id, {
+        include: [{ model: Status }, { model: Customers }],
       });
-      if (commande) {
-        res.json(commande);
+      if (command) {
+        res.json(command);
       } else {
         return res.status(404).json({ msg: "Non trouvée" });
       }
@@ -40,11 +44,11 @@ const commandeController = {
   },
   getAll: async (req, res) => {
     try {
-      const commandes = await Commande.findAll({
-        include: [{ model: Status }, { model: Client }],
+      const commands = await Commands.findAll({
+        include: [{ model: Status }, { model: Customers }],
       });
-      if (commandes) {
-        res.json(commandes);
+      if (commands) {
+        res.json(commands);
       } else {
         return res.status(404).json({ msg: "Non trouvée" });
       }
@@ -56,9 +60,9 @@ const commandeController = {
   update: async (req, res) => {
     try {
       const id = req.params.id;
-      const { statusId, clientId } = req.body;
-      const commande = await Commande.findOne({ where: { id: id } });
-      if (statusId === 0 || clientId == 0)
+      const { statusId, customerId } = req.body;
+      const command = await Commands.findOne({ where: { id: id } });
+      if (statusId === 0 || customerId == 0)
         return res
           .status(400)
           .json({ msg: "Veuillez remplir les champs vide." });
@@ -67,16 +71,16 @@ const commandeController = {
         return res.status(400).json({
           msg: `Le status choisie n'existe pas.`,
         });
-      if (clientId < 0)
+      if (customerId < 0)
         return res.status(400).json({
           msg: `Le client choisie n'existe pas.`,
         });
 
-      if (commande.statusId !== statusId || commande.clientId !== clientId)
-        await Commande.update(
+      if (command.statusId !== statusId || command.customerId !== customerId)
+        await Commands.update(
           {
             statusId,
-            clientId,
+            customerId,
           },
           { where: { id: id } }
         );
@@ -89,19 +93,19 @@ const commandeController = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
-      const commandeById = await Commande.findOne({ where: { id: id } });
-      if (!commandeById) {
+      const commandById = await Commands.findOne({ where: { id: id } });
+      if (!commandById) {
         return res.status(404).json({ msg: "Non trouvée" });
       }
       if (!id)
         return res
           .status(400)
           .json({ msg: "L'identifiant de la commande est vide." });
-      await Commande.destroy({ where: { id: id } });
+      await Commands.destroy({ where: { id: id } });
       res.json({ msg: "Supprimée avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
   },
 };
-module.exports = commandeController;
+module.exports = commandCtrl;
