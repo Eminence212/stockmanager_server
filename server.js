@@ -16,7 +16,7 @@ app.use("/supplier", require("./routes/supplierRoute"));
 app.use("/settlement", require("./routes/settlementRoute"));
 app.use("/currencie", require("./routes/currencieRoute"));
 app.use("/status", require("./routes/statusRoute"));
-app.use("/unite", require("./routes/uniteRoute"));
+app.use("/unit", require("./routes/unitRoute"));
 app.use("/article", require("./routes/articleRoute"));
 app.use("/command", require("./routes/commandRoute"));
 

@@ -1,28 +1,27 @@
-const { Unite } = require("../models");
-const uniteController = {
+const { Units } = require("../models");
+const unitCtrl = {
   register: async (req, res) => {
     try {
-      const { libelle_unite } = req.body;
-      if (!libelle_unite)
+      const { name } = req.body;
+      if (!name)
         return res.status(400).json({ msg: "Veuillez remplir le champ vide." });
-      const unite = await Unite.findOne({ where: { libelle_unite } });
-      if (unite)
+      const unit = await Units.findOne({ where: { name } });
+      if (unit)
         return res.status(400).json({
-          msg: `L'unité : ${unite.libelle_unite} existe déjà.`,
+          msg: `L'unité : ${unit.name} existe déjà.`,
         });
 
-      await Unite.create({ libelle_unite });
+      await Units.create({ name });
       res.json({ msg: "Unité ajoutée avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
   },
-
   getById: async (req, res) => {
     try {
-      const unite = await Unite.findByPk(req.params.id);
-      if (unite) {
-        res.json(unite);
+      const unit = await Units.findByPk(req.params.id);
+      if (unit) {
+        res.json(unit);
       } else {
         return res.status(404).json({ msg: "Non trouvée" });
       }
@@ -32,9 +31,9 @@ const uniteController = {
   },
   getAll: async (req, res) => {
     try {
-      const unites = await Unite.findAll();
-      if (unites) {
-        res.json(unites);
+      const units = await Units.findAll();
+      if (units) {
+        res.json(units);
       } else {
         return res.status(404).json({ msg: "Non trouvée" });
       }
@@ -46,16 +45,16 @@ const uniteController = {
   update: async (req, res) => {
     try {
       const id = req.params.id;
-      const { libelle_unite } = req.body;
-      const uniteById = await Unite.findOne({ where: { id: id } });
-      if (!uniteById) {
+      const { name } = req.body;
+      const unitById = await Units.findOne({ where: { id: id } });
+      if (!unitById) {
         return res.status(404).json({ msg: "Non trouvée" });
       }
-      if (!libelle_unite)
+      if (!name)
         return res.status(400).json({ msg: "Veuillez remplir le champ vide." });
 
-      const unite = await Unite.findOne({ where: { libelle_unite } });
-      if (!unite) await Unite.update({ libelle_unite }, { where: { id: id } });
+      const unit = await Units.findOne({ where: { name } });
+      if (!unit) await Units.update({ name }, { where: { id: id } });
       res.json({ msg: "Mise à jour réussie !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -65,14 +64,14 @@ const uniteController = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
-      const uniteById = await Unite.findOne({ where: { id: id } });
-      if (!uniteById) return res.status(404).json({ msg: "Non trouvée" });
+      const unitById = await Units.findOne({ where: { id: id } });
+      if (!unitById) return res.status(404).json({ msg: "Non trouvée" });
       if (!id) return res.status(400).json({ msg: "L'identifiant est vide." });
-      await Unite.destroy({ where: { id: id } });
+      await Units.destroy({ where: { id: id } });
       res.json({ msg: "Supprimée avec succès" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
   },
 };
-module.exports = uniteController;
+module.exports = unitCtrl;
