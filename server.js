@@ -23,6 +23,7 @@ app.use("/rate", require("./routes/rateRoute")); //Taux
 app.use("/procurement", require("./routes/procurementRoute")); //Approvisionnement ou Entrée
 app.use("/distribution", require("./routes/distributionRoute")); //Distribution ou Sortie
 app.use("/invoice", require("./routes/invoiceRoute")); //Facture
+app.use("/stock_movement", require("./routes/stock_movementRoute")); //Mouvement stock
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
