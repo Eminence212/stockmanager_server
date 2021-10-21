@@ -25,6 +25,7 @@ app.use("/distribution", require("./routes/distributionRoute")); //Distribution 
 app.use("/invoice", require("./routes/invoiceRoute")); //Facture
 app.use("/stock_movement", require("./routes/stock_movementRoute")); //Mouvement stock
 app.use("/stock", require("./routes/stockRoute")); //Stock
+app.use("/init_stock", require("./routes/invoiceRoute")); //Stock initial
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
