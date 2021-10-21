@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const { CLIENT_URL } = process.env;
 
-const userController = {
+const userCtrl = {
   register: async (req, res) => {
     try {
       const { nom, password } = req.body;
@@ -211,4 +211,4 @@ const createRefreshToken = (payload) => {
     expiresIn: "5d",
   });
 };
-module.exports = userController;
+module.exports = userCtrl;
