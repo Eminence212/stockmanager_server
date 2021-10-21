@@ -24,6 +24,7 @@ app.use("/procurement", require("./routes/procurementRoute")); //Approvisionneme
 app.use("/distribution", require("./routes/distributionRoute")); //Distribution ou Sortie
 app.use("/invoice", require("./routes/invoiceRoute")); //Facture
 app.use("/stock_movement", require("./routes/stock_movementRoute")); //Mouvement stock
+app.use("/stock", require("./routes/stockRoute")); //Stock
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

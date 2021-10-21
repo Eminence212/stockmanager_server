@@ -1,4 +1,4 @@
-const { Articles, Families } = require("../models");
+const { Articles, Families, Stocks, Stock_movements } = require("../models");
 const articleCtrl = {
   register: async (req, res) => {
     try {
@@ -61,7 +61,11 @@ const articleCtrl = {
   getById: async (req, res) => {
     try {
       const article = await Articles.findByPk(req.params.id, {
-        include: Families,
+        include: [
+          { model: Stocks },
+          { model: Stock_movements },
+          { model: Families },
+        ],
       });
       if (article) {
         res.json(article);
@@ -74,7 +78,13 @@ const articleCtrl = {
   },
   getAll: async (req, res) => {
     try {
-      const articles = await Articles.findAll({ include: Families });
+      const articles = await Articles.findAll({
+        include: [
+          { model: Stocks },
+          { model: Stock_movements },
+          { model: Families },
+        ],
+      });
       if (articles) {
         res.json(articles);
       } else {
