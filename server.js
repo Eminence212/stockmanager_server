@@ -9,17 +9,18 @@ app.use(cors());
 app.use(cookieParser());
 
 // Routes
-app.use("/user", require("./routes/userRoute"));
-app.use("/customer", require("./routes/customerRoute"));
-app.use("/family", require("./routes/familyRoute"));
-app.use("/supplier", require("./routes/supplierRoute"));
-app.use("/settlement", require("./routes/settlementRoute"));
-app.use("/currencie", require("./routes/currencieRoute"));
-app.use("/rate", require("./routes/rateRoute"));
-app.use("/status", require("./routes/statusRoute"));
-app.use("/unit", require("./routes/unitRoute"));
-app.use("/article", require("./routes/articleRoute"));
-app.use("/command", require("./routes/commandRoute"));
+app.use("/user", require("./routes/userRoute")); //Utilisateur
+app.use("/customer", require("./routes/customerRoute")); //client
+app.use("/family", require("./routes/familyRoute")); //famille
+app.use("/supplier", require("./routes/supplierRoute")); //Fournisseur
+app.use("/settlement", require("./routes/settlementRoute")); //Mode règlement
+app.use("/currencie", require("./routes/currencieRoute")); //Monnaie
+app.use("/status", require("./routes/statusRoute")); //status de la commande
+app.use("/unit", require("./routes/unitRoute")); // Unité de stockage
+app.use("/article", require("./routes/articleRoute")); //Article
+app.use("/command", require("./routes/commandRoute")); //Commande
+app.use("/rate", require("./routes/rateRoute")); //Taux
+app.use("/procurement", require("./routes/procurementRoute")); //Approvisionnement ou Entrée
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
