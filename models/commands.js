@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       Commands.hasMany(models.Distributions, {
         foreignKey: "commandId",
       });
-     
+      Commands.hasMany(models.Invoices, {
+        foreignKey: "commandId",
+      });
     }
   }
   Commands.init(
