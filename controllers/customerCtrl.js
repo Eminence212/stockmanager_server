@@ -1,18 +1,18 @@
-const { Client,Commande} = require("../models");
-const clientController = {
+const { Customers,Commands} = require("../models");
+const customerCtrl = {
   register: async (req, res) => {
     try {
-      const { nom, contact } = req.body;
-      if (!nom || !contact)
+      const { name, contact } = req.body;
+      if (!name || !contact)
         return res
           .status(400)
           .json({ msg: "Veuillez remplir tous les champs." });
-      const customerName = await Client.findOne({ where: { nom } });
+      const customerName = await Customers.findOne({ where: { nom: name } });
       if (customerName)
         return res
           .status(400)
           .json({ msg: `Le client : ${customerName.nom} existe déjà.` });
-      const customerContact = await Client.findOne({ where: { contact } });
+      const customerContact = await Customers.findOne({ where: { contact } });
       if (customerContact)
         return res.status(400).json({
           msg: `Le contact : ${customerContact.contact}  existe déjà.`,
@@ -22,8 +22,8 @@ const clientController = {
           msg: "Le contact doit comporter 10 caractères. (ex:082xxxxxxx)",
         });
 
-      const newCustomer = { nom, contact };
-      await Client.create(newCustomer);
+      const newCustomer = { name, contact };
+      await Customers.create(newCustomer);
       res.json({ msg: "Client ajouté avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -33,14 +33,14 @@ const clientController = {
   getById: async (req, res) => {
     try {
       const id = req.params.id;
-      const customerById = await Client.findOne(
+      const customerById = await Customers.findOne(
         { where: { id: id } },
-        { include: Commande }
+        { include: Commands }
       );
       if (!customerById) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
-      const customer = await Client.findByPk(id);
+      const customer = await Customers.findByPk(id);
       res.json(customer);
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -48,7 +48,7 @@ const clientController = {
   },
   getAll: async (req, res) => {
     try {
-      const customers = await Client.findAll({ include: Commande });
+      const customers = await Customers.findAll({ include: Commands });
       if (!customers) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
@@ -61,12 +61,12 @@ const clientController = {
   update: async (req, res) => {
     try {
       const id = req.params.id;
-      const customerById = await Client.findOne({ where: { id: id } });
+      const customerById = await Customers.findOne({ where: { id: id } });
       if (!customerById) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
-      const { nom, contact } = req.body;
-      if (!nom || !contact)
+      const { name, contact } = req.body;
+      if (!name || !contact)
         return res
           .status(400)
           .json({ msg: "Veuillez remplir tous les champs." });
@@ -74,13 +74,13 @@ const clientController = {
         return res.status(400).json({
           msg: "Le contact doit comporter 10 caractères. (ex:082xxxxxxx)",
         });
-      const customerName = await Client.findOne({ where: { nom } });
-      if (!customerName) await Client.update({ nom }, { where: { id: id } });
-      const customerContact = await Client.findOne({ where: { contact } });
+      const customerName = await Customers.findOne({ where: {name } });
+      if (!customerName) await Customers.update({name }, { where: { id: id } });
+      const customerContact = await Customers.findOne({ where: { contact } });
       if (!customerContact)
-        await Client.update({ contact }, { where: { id: id } });
+        await Customers.update({ contact }, { where: { id: id } });
       if (!customerContact && !customerName)
-        await Client.update({ nom, contact }, { where: { id: id } });
+        await Customers.update({name, contact }, { where: { id: id } });
       res.json({ msg: "Mise à jour réussie !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -94,11 +94,11 @@ const clientController = {
         return res
           .status(400)
           .json({ msg: "L'identifiant du client est vide." });
-      await Client.destroy({ where: { id: id } });
+      await Customers.destroy({ where: { id: id } });
       res.json({ msg: "Supprimé avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
   },
 };
-module.exports = clientController;
+module.exports = customerCtrl;

@@ -1,5 +1,5 @@
 const { Articles, Families } = require("../models");
-const articleController = {
+const articleCtrl = {
   register: async (req, res) => {
     try {
       const {
@@ -167,4 +167,4 @@ const articleController = {
     }
   },
 };
-module.exports = articleController;
+module.exports = articleCtrl;

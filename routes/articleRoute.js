@@ -1,12 +1,12 @@
 const router = require("express").Router();
-const articleController = require("../controllers/articleController");
+const articleCtrl = require("../controllers/articleCtrl");
 const auth = require("../middlewares/auth");
 const authAdmin = require("../middlewares/authAdmin");
 
-router.post("/add", auth, articleController.register);
-router.get("/:id", auth, articleController.getById);
-router.get("/", auth, articleController.getAll);
-router.patch("/update/:id", auth, authAdmin, articleController.update);
-router.delete("/delete/:id", auth, authAdmin, articleController.delete);
+router.post("/add", auth, articleCtrl.register);
+router.get("/:id", auth, articleCtrl.getById);
+router.get("/", auth, articleCtrl.getAll);
+router.patch("/update/:id", auth, authAdmin, articleCtrl.update);
+router.delete("/delete/:id", auth, authAdmin, articleCtrl.delete);
 
 module.exports = router;

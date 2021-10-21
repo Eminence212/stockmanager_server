@@ -10,7 +10,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/user", require("./routes/userRoute"));
-app.use("/client", require("./routes/clientRoute"));
+app.use("/customer", require("./routes/customerRoute"));
 app.use("/famille", require("./routes/familleRoute"));
 app.use("/fournisseur", require("./routes/fournisseurRoute"));
 app.use("/mode_reglement", require("./routes/modeReglementRoute"));
