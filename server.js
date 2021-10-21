@@ -27,7 +27,7 @@ app.use("/stock_movement", require("./routes/stock_movementRoute")); //Mouvement
 app.use("/stock", require("./routes/stockRoute")); //Stock
 app.use("/init_stock", require("./routes/invoiceRoute")); //Stock initial
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Le server tourne sur le port : ${PORT}`);
 });
