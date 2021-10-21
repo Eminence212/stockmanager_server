@@ -1,4 +1,4 @@
-const { Article,Famille} = require("../models");
+const { Articles, Families } = require("../models");
 const articleController = {
   register: async (req, res) => {
     try {
@@ -16,12 +16,12 @@ const articleController = {
         return res
           .status(400)
           .json({ msg: "Veuillez remplir les champs vide." });
-      const _reference = await Article.findOne({ where: { reference } });
+      const _reference = await Articles.findOne({ where: { reference } });
       if (_reference)
         return res.status(400).json({
           msg: `La référence : ${_reference.reference} existe déjà.`,
         });
-      const _designation = await Article.findOne({ where: { designation } });
+      const _designation = await Articles.findOne({ where: { designation } });
       if (_designation)
         return res.status(400).json({
           msg: `La désignation : ${_designation.designation} existe déjà.`,
@@ -52,7 +52,7 @@ const articleController = {
         quante_min: quantite_min,
         familleId,
       };
-      await Article.create(newArticle);
+      await Articles.create(newArticle);
       res.json({ msg: "Article ajouté avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -60,8 +60,8 @@ const articleController = {
   },
   getById: async (req, res) => {
     try {
-      const article = await Article.findByPk(req.params.id, {
-        include: Famille,
+      const article = await Articles.findByPk(req.params.id, {
+        include: Families,
       });
       if (article) {
         res.json(article);
@@ -74,7 +74,7 @@ const articleController = {
   },
   getAll: async (req, res) => {
     try {
-      const articles = await Article.findAll({ include: Famille });
+      const articles = await Articles.findAll({ include: Families });
       if (articles) {
         res.json(articles);
       } else {
@@ -97,7 +97,7 @@ const articleController = {
         quantite_min,
         familleId,
       } = req.body;
-      const article = await Famille.findOne({ where: { id: id } });
+      const article = await Families.findOne({ where: { id: id } });
       if (!article) {
         return res.status(404).json({ msg: "Non trouvée" });
       }
@@ -131,7 +131,7 @@ const articleController = {
         article.quantite_min !== quantite_min ||
         article.familleId !== familleId
       )
-        await Article.update(
+        await Articles.update(
           {
             reference,
             designation,
@@ -152,7 +152,7 @@ const articleController = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
-      const articleById = await Article.findOne({ where: { id: id } });
+      const articleById = await Articles.findOne({ where: { id: id } });
       if (!articleById) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
@@ -160,7 +160,7 @@ const articleController = {
         return res
           .status(400)
           .json({ msg: "L'identifiant de l'article est vide." });
-      await Article.destroy({ where: { id: id } });
+      await Articles.destroy({ where: { id: id } });
       res.json({ msg: "Supprimé avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
