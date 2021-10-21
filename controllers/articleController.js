@@ -5,14 +5,14 @@ const articleController = {
       const {
         reference,
         designation,
-        prix,
+        price,
         tva,
-        seuil,
-        quantite_min,
-        familleId,
+        threshold,
+        minQuantity,
+        familyId,
       } = req.body;
 
-      if (!reference || !designation || familleId === 0)
+      if (!reference || !designation || familyId === 0)
         return res
           .status(400)
           .json({ msg: "Veuillez remplir les champs vide." });
@@ -31,26 +31,26 @@ const articleController = {
         return res.status(400).json({
           msg: `La TVA ne peut être négative.`,
         });
-      if (seuil < 0)
+      if (threshold < 0)
         return res.status(400).json({
           msg: `Le seuil de réapprovisionnement ne peut être négatif.`,
         });
-      if (quantite_min < 0)
+      if (minQuantity < 0)
         return res.status(400).json({
           msg: `La quantité de stock minimal ne peut être négative.`,
         });
-      if (familleId < 0)
+      if (familyId < 0)
         return res.status(400).json({
           msg: `La famille choisie n'existe pas.`,
         });
       const newArticle = {
         reference,
         designation,
-        prix_vente: prix,
+        price,
         tva,
-        seuil_reapprovisionnement: seuil,
-        quante_min: quantite_min,
-        familleId,
+        threshold,
+        minQuantity,
+        familyId,
       };
       await Articles.create(newArticle);
       res.json({ msg: "Article ajouté avec succès !" });
@@ -91,17 +91,17 @@ const articleController = {
       const {
         reference,
         designation,
-        prix,
+        price,
         tva,
-        seuil,
-        quantite_min,
-        familleId,
+        threshold,
+        minQuantity,
+        familyId,
       } = req.body;
-      const article = await Families.findOne({ where: { id: id } });
+      const article = await Articles.findOne({ where: { id: id } });
       if (!article) {
         return res.status(404).json({ msg: "Non trouvée" });
       }
-      if (!reference || !designation || familleId === 0)
+      if (!reference || !designation || familyId === 0)
         return res
           .status(400)
           .json({ msg: "Veuillez remplir les champs vide." });
@@ -109,15 +109,15 @@ const articleController = {
         return res.status(400).json({
           msg: `La TVA ne peut être négative.`,
         });
-      if (seuil < 0)
+      if (threshold < 0)
         return res.status(400).json({
           msg: `Le seuil de réapprovisionnement ne peut être négatif.`,
         });
-      if (quantite_min < 0)
+      if (minQuantity < 0)
         return res.status(400).json({
           msg: `La quantité de stock minimal ne peut être négative.`,
         });
-      if (familleId < 0)
+      if (familyId < 0)
         return res.status(400).json({
           msg: `La famille choisie n'existe pas.`,
         });
@@ -125,21 +125,21 @@ const articleController = {
       if (
         article.reference !== reference ||
         article.designation !== designation ||
-        article.prix_vente !== prix ||
+        article.price !== price ||
         article.tva !== tva ||
-        article.seuil_reapprovisionnement !== seuil ||
-        article.quantite_min !== quantite_min ||
-        article.familleId !== familleId
+        article.threshold !== threshold ||
+        article.minQuantity !== minQuantity ||
+        article.familyId !== familyId
       )
         await Articles.update(
           {
             reference,
             designation,
-            prix_vente: prix,
+            pric,
             tva,
-            seuil_reapprovisionnement: seuil,
-            quante_min: quantite_min,
-            familleId,
+            threshold,
+            minQuantity,
+            familyId,
           },
           { where: { id: id } }
         );
