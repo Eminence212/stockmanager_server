@@ -7,11 +7,11 @@ const customerCtrl = {
         return res
           .status(400)
           .json({ msg: "Veuillez remplir tous les champs." });
-      const customerName = await Customers.findOne({ where: { nom: name } });
+      const customerName = await Customers.findOne({ where: { name } });
       if (customerName)
         return res
           .status(400)
-          .json({ msg: `Le client : ${customerName.nom} existe déjà.` });
+          .json({ msg: `Le client : ${customerName.name} existe déjà.` });
       const customerContact = await Customers.findOne({ where: { contact } });
       if (customerContact)
         return res.status(400).json({
@@ -33,14 +33,11 @@ const customerCtrl = {
   getById: async (req, res) => {
     try {
       const id = req.params.id;
-      const customerById = await Customers.findOne(
-        { where: { id: id } },
-        { include: Commands }
-      );
-      if (!customerById) {
+      const customer = await Customers.findByPk(id, { include: Commands });
+      if (!customer) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
-      const customer = await Customers.findByPk(id);
+      
       res.json(customer);
     } catch (error) {
       return res.status(500).json({ msg: error.message });
