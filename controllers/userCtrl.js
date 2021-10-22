@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { Users } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -7,12 +7,12 @@ const { CLIENT_URL } = process.env;
 const userCtrl = {
   register: async (req, res) => {
     try {
-      const { nom, password } = req.body;
-      if (!nom || !password)
+      const { name, password } = req.body;
+      if (!name || !password)
         return res
           .status(400)
           .json({ msg: "Veuillez remplir tous les champs." });
-      const user = await User.findOne({ where: { nom } });
+      const user = await Users.findOne({ where: { name } });
       if (user)
         return res
           .status(400)
@@ -25,7 +25,7 @@ const userCtrl = {
       const passwordHash = await bcrypt.hash(password, 12);
 
       const newUser = {
-        nom,
+        name,
         password: passwordHash,
       };
 
@@ -49,15 +49,15 @@ const userCtrl = {
         activation_token,
         process.env.ACTIVATION_TOKEN_SECRET
       );
-      const { nom, password } = user;
+      const { name, password } = user;
 
-      const check = await User.findOne({ where: { nom } });
+      const check = await Users.findOne({ where: { name } });
       if (check)
         return res
           .status(400)
           .json({ msg: "Ce nom d'utilisateur existe déjà." });
-      const newUser = { nom, password };
-      await User.create(newUser);
+      const newUser = { name, password };
+      await Users.create(newUser);
       res.json({ msg: "Votre compte a été activé !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -65,8 +65,8 @@ const userCtrl = {
   },
   login: async (req, res) => {
     try {
-      const { nom, password } = req.body;
-      const user = await User.findOne({ where: { nom } });
+      const { name, password } = req.body;
+      const user = await Users.findOne({ where: { name } });
       if (!user)
         return res
           .status(400)
@@ -108,8 +108,8 @@ const userCtrl = {
   },
   forgotPassword: async (req, res) => {
     try {
-      const { nom } = req.body;
-      const user = await User.findOne({ where: { nom } });
+      const { name } = req.body;
+      const user = await Users.findOne({ where: { name } });
       if (!user)
         return res
           .status(400)
@@ -132,7 +132,7 @@ const userCtrl = {
     try {
       const { password } = req.body;
       const passwordHash = await bcrypt.hash(password, 12);
-      await User.update(
+      await Users.update(
         { password: passwordHash },
         { where: { id: req.user.id } }
       );
@@ -143,8 +143,8 @@ const userCtrl = {
   },
   getUserInfor: async (req, res) => {
     try {
-      const user = await User.findByPk(req.user.id, {
-        attributes: ["id", "nom", "avatar", "role"],
+      const user = await Users.findByPk(req.user.id, {
+        attributes: ["id", "name", "avatar", "role"],
       });
       res.json(user);
     } catch (error) {
@@ -153,8 +153,8 @@ const userCtrl = {
   },
   getUsersAllInfor: async (req, res) => {
     try {
-      const users = await User.findAll({
-        attributes: ["id", "nom", "avatar", "role"],
+      const users = await Users.findAll({
+        attributes: ["id", "name", "avatar", "role"],
       });
       res.json(users);
     } catch (error) {
@@ -172,7 +172,7 @@ const userCtrl = {
   updateAvatar: async (req, res) => {
     try {
       const { avatar } = req.body;
-      await User.update({ avatar }, { where: { id: req.user.id } });
+      await Users.update({ avatar }, { where: { id: req.user.id } });
       res.json({ msg: "Mise à jour réussie !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -181,7 +181,7 @@ const userCtrl = {
   updateUsersRole: async (req, res) => {
     try {
       const { role } = req.body;
-      await User.update({ role }, { where: { id: req.params.id } });
+      await Users.update({ role }, { where: { id: req.params.id } });
       res.json({ msg: "Mise à jour réussie !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -189,7 +189,7 @@ const userCtrl = {
   },
   deleteUser: async (req, res) => {
     try {
-      await User.destroy({ where: { id: req.params.id } });
+      await Users.destroy({ where: { id: req.params.id } });
       res.json({ msg: "Supprimé avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
