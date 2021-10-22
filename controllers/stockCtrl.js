@@ -7,7 +7,8 @@ const stockCtrl = {
         return res
           .status(400)
           .json({ msg: "Veuillez remplir les champs vide." });
-
+      const article = await Stocks.findOne({ where: { articleId } });
+      if (article) return res.status(400).json({ msg: "Déjà en stock !" });
       await Stocks.create({ quantityStock, articleId });
       res.json({ msg: "Ajouté avec succès !" });
     } catch (error) {
@@ -53,10 +54,7 @@ const stockCtrl = {
       if (quantityStock === 0 || articleId === 0)
         return res.status(400).json({ msg: "Veuillez remplir le champ vide." });
 
-      await Families.update(
-        { quantityStock, articleId },
-        { where: { id: id } }
-      );
+      await Stocks.update({ quantityStock, articleId }, { where: { id: id } });
       res.json({ msg: "Mise à jour réussie !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -67,12 +65,8 @@ const stockCtrl = {
     try {
       const id = req.params.id;
       const stockById = await Stocks.findOne({ where: { id: id } });
-      if (!stockById) {
-        return res.status(404).json({ msg: "Non trouvé" });
-      }
-      if (id === 0)
-        return res.status(400).json({ msg: "L'identifiant est vide." });
-      await Families.destroy({ where: { id: id } });
+      if (!stockById) return res.status(404).json({ msg: "Non trouvé" });
+      await Stocks.destroy({ where: { id: id } });
       res.json({ msg: "Supprimé avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });

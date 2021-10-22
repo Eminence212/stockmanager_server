@@ -1,9 +1,10 @@
 const { Init_stocks, Articles } = require("../models");
-
+const { Op } = require("sequelize");
 const init_stockCtrl = {
   register: async (req, res) => {
     try {
       const { quantity, articleId } = req.body;
+      const entryDate = new Date();
       if (quantity === 0 || articleId === 0)
         return res
           .status(400)
@@ -14,6 +15,18 @@ const init_stockCtrl = {
           msg: "Le stock ne peut être vide.",
         });
 
+      // const initStock = await Init_stocks.findOne({
+      //   where: {
+      //     entryDate: {
+      //       [Op.lt]: new Date(),
+      //       [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000),
+      //     },
+      //   },
+      // });
+      // if (initStock)
+      //   return res.status(400).json({
+      //     msg: "Stock déjà initialisé",
+      //   });
       const newStock = {
         entryDate: new Date(),
         quantity,
@@ -82,8 +95,8 @@ const init_stockCtrl = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
-      if (id <= 0)
-        return res.status(400).json({ msg: "L'identifiant est vide." });
+      const stock = await Init_stocks.findOne({ where: { id: id } });
+      if (!stock) return res.status(400).json({ msg: "Non trouvé" });
       await Init_stocks.destroy({ where: { id: id } });
       res.json({ msg: "Supprimé avec succès !" });
     } catch (error) {

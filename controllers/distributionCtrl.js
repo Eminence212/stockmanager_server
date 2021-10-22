@@ -57,7 +57,6 @@ const distributionCtrl = {
 
   update: async (req, res) => {
     try {
-      supplierId;
       const id = req.params.id;
       const { quantityDistributed, commandId, articleId } = req.body;
       const distribution = await Distributions.findOne({ where: { id: id } });
@@ -75,11 +74,11 @@ const distributionCtrl = {
         });
 
       if (
-        procurement.quantityDistributed !== quantityDistributed ||
-        procurement.articleId !== articleId ||
-        procurement.commandId !== commandId
+        distribution.quantityDistributed !== quantityDistributed ||
+        distribution.articleId !== articleId ||
+        distribution.commandId !== commandId
       )
-        await Articles.update(
+        await Distributions.update(
           {
             dateDescription: new Date(),
             quantityDistributed,

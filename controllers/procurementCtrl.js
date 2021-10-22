@@ -104,7 +104,7 @@ const procurementCtrl = {
         procurement.supplierId !== supplierId ||
         procurement.unitId !== unitId
       )
-        await Articles.update(
+        await Procurements.update(
           {
             procurementDate: new Date(),
             supplyQuantity,

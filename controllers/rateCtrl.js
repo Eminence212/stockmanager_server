@@ -1,4 +1,4 @@
-const { Rates } = require("../models");
+const { Rates, Currencies } = require("../models");
 const rateCtrl = {
   register: async (req, res) => {
     try {
@@ -33,7 +33,7 @@ const rateCtrl = {
   getById: async (req, res) => {
     try {
       const id = req.params.id;
-      const rate = await Rates.findByPk(id);
+      const rate = await Rates.findByPk(id, { include: Currencies });
       if (!rate) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
@@ -44,7 +44,7 @@ const rateCtrl = {
   },
   getAll: async (req, res) => {
     try {
-      const rates = await Rates.findAll();
+      const rates = await Rates.findAll({ include: Currencies });
       if (!rates) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
