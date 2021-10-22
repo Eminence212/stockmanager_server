@@ -16,17 +16,17 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Status",
-          key:"id"
-        }
+          model: "Statuses",
+          key: "id",
+        },
       },
       customerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: "Customers",
-          key:"id"
-        }
+          key: "id",
+        },
       },
       createdAt: {
         allowNull: false,

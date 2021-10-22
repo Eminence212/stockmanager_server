@@ -145,7 +145,7 @@ const articleCtrl = {
           {
             reference,
             designation,
-            pric,
+            price,
             tva,
             threshold,
             minQuantity,

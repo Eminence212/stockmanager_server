@@ -10,7 +10,6 @@ const statusController = {
         return res.status(400).json({
           msg: `Le status : ${status.name} existe déjà.`,
         });
-
       await Status.create({ name });
       res.json({ msg: "Status ajouté avec succès !" });
     } catch (error) {
