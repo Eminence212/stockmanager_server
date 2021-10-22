@@ -56,7 +56,8 @@ const distributionCtrl = {
   },
 
   update: async (req, res) => {
-    try {supplierId
+    try {
+      supplierId;
       const id = req.params.id;
       const { quantityDistributed, commandId, articleId } = req.body;
       const distribution = await Distributions.findOne({ where: { id: id } });
@@ -76,7 +77,7 @@ const distributionCtrl = {
       if (
         procurement.quantityDistributed !== quantityDistributed ||
         procurement.articleId !== articleId ||
-        procurement.commandId !== commandId ||
+        procurement.commandId !== commandId
       )
         await Articles.update(
           {
@@ -96,7 +97,9 @@ const distributionCtrl = {
   delete: async (req, res) => {
     try {
       const id = req.params.id;
-      const distributionById = await Distributions.findOne({ where: { id: id } });
+      const distributionById = await Distributions.findOne({
+        where: { id: id },
+      });
       if (!distributionById) {
         return res.status(404).json({ msg: "Non trouvée" });
       }
