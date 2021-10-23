@@ -2,11 +2,31 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+
+// Swagger options
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title:"Stock Manager API",
+      description: "Stock manager API information",
+      contact: {
+        name:"Eminence Developer"
+      },
+      servers:["http://localhost:8000"]
+    }
+  },
+  apis:["./routes/*.js"]
+}
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions)
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 // Routes
 app.use("/user", require("./routes/userRoute")); //Utilisateur
@@ -29,5 +49,5 @@ app.use("/init_stock", require("./routes/init_stockCtrl")); //Stock initial
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  console.log(`Server listening on por: ${PORT}`);
+  console.log(`Server listening on http://localhost:${PORT}`);
 });
