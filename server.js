@@ -29,5 +29,5 @@ app.use("/init_stock", require("./routes/init_stockCtrl")); //Stock initial
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  console.log(`The server run on por: ${PORT}`);
+  console.log(`Server listening on por: ${PORT}`);
 });
