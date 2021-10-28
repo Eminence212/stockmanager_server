@@ -13,12 +13,7 @@ router.get("/infor", auth, userCtrl.getUserInfor);
 router.get("/all_infor", auth, authAdmin, userCtrl.getUsersAllInfor);
 router.get("/logout", userCtrl.logout);
 router.patch("/update_avatar", auth, userCtrl.updateAvatar);
-router.patch(
-  "/update_role/:id",
-  auth,
-  authAdmin,
-  userCtrl.updateUsersRole
-);
+router.patch("/update_role/:id", auth, authAdmin, userCtrl.updateUsersRole);
 router.delete("/delete/:id", auth, authAdmin, userCtrl.deleteUser);
 
 module.exports = router;

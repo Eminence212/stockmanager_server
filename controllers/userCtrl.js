@@ -82,7 +82,7 @@ const userCtrl = {
         path: "/user/refresh_token",
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       });
-      res.json({ msg: "Connexion réussie !" });
+      res.json({ msg: "Connexion réussie !", refresh_token });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
