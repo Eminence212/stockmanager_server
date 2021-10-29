@@ -7,17 +7,17 @@
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
+    "username": "u6llualskns1iymm",
+    "password": "J80fqMkO8J0w9dQBZeYC",
+    "database": "bigdexs2ojj9es6vch6h",
+    "host": "bigdexs2ojj9es6vch6h-mysql.services.clever-cloud.com",
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "u6llualskns1iymm",
+    "password": "J80fqMkO8J0w9dQBZeYC",
+    "database": "bigdexs2ojj9es6vch6h",
+    "host": "bigdexs2ojj9es6vch6h-mysql.services.clever-cloud.com",
     "dialect": "mysql"
   }
 }
