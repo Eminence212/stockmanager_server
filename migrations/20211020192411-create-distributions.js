@@ -17,6 +17,16 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
+      distributionPrice: {
+        type: Sequelize.FLOAT(24, 2),
+        allowNull: false,
+        defaultValue: 0,
+      },
+      distributionTva: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+      },
       commandId: {
         type: Sequelize.INTEGER,
         allowNull: false,

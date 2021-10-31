@@ -2,7 +2,13 @@ const { Distributions, Articles, Commands } = require("../models");
 const distributionCtrl = {
   register: async (req, res) => {
     try {
-      const { quantityDistributed, commandId, articleId } = req.body;
+      const {
+        quantityDistributed,
+        distributionPrice,
+        distributionTva,
+        commandId,
+        articleId,
+      } = req.body;
 
       if (quantityDistributed === 0 || articleId === 0 || commandId === 0)
         return res
@@ -17,6 +23,8 @@ const distributionCtrl = {
       const newDistribution = {
         dateDescription: new Date(),
         quantityDistributed,
+        distributionPrice,
+        distributionTva,
         commandId,
         articleId,
       };
