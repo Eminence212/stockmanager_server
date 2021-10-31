@@ -26,6 +26,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
       },
       folio: DataTypes.STRING(50),
+      initQuantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       supplyQuantity: {
         type: DataTypes.INTEGER,
         defaultValue: 0,

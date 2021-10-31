@@ -2,8 +2,14 @@ const { Procurements, Articles, Suppliers, Units } = require("../models");
 const procurementCtrl = {
   register: async (req, res) => {
     try {
-      const { supplyQuantity, purchasePrice, articleId, supplierId, unitId } =
-        req.body;
+      const {
+        initQuantity,
+        supplyQuantity,
+        purchasePrice,
+        articleId,
+        supplierId,
+        unitId,
+      } = req.body;
 
       if (
         supplyQuantity === 0 ||
@@ -27,6 +33,7 @@ const procurementCtrl = {
 
       const newProcurement = {
         procurementDate: new Date(),
+        initQuantity,
         supplyQuantity,
         purchasePrice,
         articleId,

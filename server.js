@@ -24,7 +24,6 @@ app.use(cookieParser());
 //   },
 //   apis:["./routes/*.js"]
 // }
-
 // const swaggerDocs = swaggerJsDoc(swaggerOptions)
 // app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
