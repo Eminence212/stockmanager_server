@@ -91,7 +91,7 @@ const userCtrl = {
   getAccessToken: (req, res) => {
     try {
       // const rf_token = req.cookies.refreshtoken;
-      const {refresh_token} = req.body;
+      const { refresh_token } = req.body;
       if (!refresh_token)
         return res
           .status(400)
