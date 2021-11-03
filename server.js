@@ -24,7 +24,6 @@ app.use(cookieParser());
 //   },
 //   apis:["./routes/*.js"]
 // }
-
 // const swaggerDocs = swaggerJsDoc(swaggerOptions)
 // app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
@@ -38,15 +37,12 @@ app.use("/currencie", require("./routes/currencieRoute")); //Monnaie
 app.use("/status", require("./routes/statusRoute")); //status de la commande
 app.use("/unit", require("./routes/unitRoute")); // Unité de stockage
 app.use("/article", require("./routes/articleRoute")); //Article
-app.use("/command", require("./routes/commandRoute")); //Commande
+app.use("/command", require("./routes/commandRoute")); //Commande / Vente
 app.use("/rate", require("./routes/rateRoute")); //Taux
 app.use("/procurement", require("./routes/procurementRoute")); //Approvisionnement ou Entrée
 app.use("/distribution", require("./routes/distributionRoute")); //Distribution ou Sortie
 app.use("/invoice", require("./routes/invoiceRoute")); //Facture
-app.use("/stock_movement", require("./routes/stock_movementRoute")); //Mouvement stock
 app.use("/stock", require("./routes/stockRoute")); //Stock
-app.use("/init_stock", require("./routes/init_stockCtrl")); //Stock initial
-
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);

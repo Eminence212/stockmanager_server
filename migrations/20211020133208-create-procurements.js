@@ -11,6 +11,11 @@ module.exports = {
         type: Sequelize.DATE,
       },
       folio: Sequelize.STRING(50),
+      initQuantity: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       supplyQuantity: {
         type: Sequelize.INTEGER,
         defaultValue: 0,

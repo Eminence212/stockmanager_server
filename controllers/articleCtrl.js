@@ -1,4 +1,4 @@
-const { Articles, Families, Stocks, Stock_movements } = require("../models");
+const { Articles, Families, Stocks } = require("../models");
 const articleCtrl = {
   register: async (req, res) => {
     try {
@@ -63,7 +63,6 @@ const articleCtrl = {
       const article = await Articles.findByPk(req.params.id, {
         include: [
           { model: Stocks },
-          { model: Stock_movements },
           { model: Families },
         ],
       });
@@ -81,7 +80,6 @@ const articleCtrl = {
       const articles = await Articles.findAll({
         include: [
           { model: Stocks },
-          { model: Stock_movements },
           { model: Families },
         ],
       });

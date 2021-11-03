@@ -14,15 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       Articles.hasMany(models.Distributions, {
         foreignKey: "articleId",
       });
-      Articles.hasMany(models.Stock_movements, {
-        foreignKey: "articleId",
-      });
       Articles.hasOne(models.Stocks, {
         foreignKey: "articleId",
       });
-        Articles.hasOne(models.Init_stocks, {
-          foreignKey: "articleId",
-        });
     }
   }
   Articles.init(
