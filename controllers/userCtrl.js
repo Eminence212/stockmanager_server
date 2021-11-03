@@ -118,7 +118,7 @@ const userCtrl = {
           .json({ msg: "Ce nom d'utilisateur n'existe pas." });
       const access_token = createAccessToken({ id: user.id });
       // const url = `${CLIENT_URL}/user/reset/${access_token}`;
-      const url = `/user/reset/${access_token}`;
+      const url = `/user/reset/${access_token}/${user.id}`;
 
       // sendMail(email,url,"Reset your password")
 
@@ -132,11 +132,11 @@ const userCtrl = {
   },
   resetPassword: async (req, res) => {
     try {
-      const { password } = req.body;
+      const { password,id } = req.body;
       const passwordHash = await bcrypt.hash(password, 12);
       await Users.update(
         { password: passwordHash },
-        { where: { id: req.user.id } }
+        { where: { id: id } }
       );
       res.json({ msg: "Le mot de passe a été changé avec succès !" });
     } catch (error) {
