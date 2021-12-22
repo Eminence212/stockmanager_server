@@ -191,8 +191,11 @@ const userCtrl = {
   },
   updateUserProfile: async (req, res) => {
     try {
-      const {name,password} = req.body;
-      await Users.update({ name, password }, { where: { id: req.params.id } });
+      const {name,password,role,avatar} = req.body;
+      await Users.update(
+        { name, password, role, avatar },
+        { where: { id: req.params.id } }
+      );
       res.json({ msg: "Profile mise à jour !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
