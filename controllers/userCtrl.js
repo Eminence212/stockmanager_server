@@ -81,7 +81,6 @@ const userCtrl = {
         httpOnly: true,
         path: "/user/refresh_token",
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
-        
       });
       res.json({ msg: "Connexion réussie !", refresh_token });
     } catch (error) {
@@ -96,14 +95,18 @@ const userCtrl = {
         return res
           .status(400)
           .json({ msg: "Veuillez vous connecter maintenant !" });
-      jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err)
-          return res
-            .status(400)
-            .json({ msg: "Veuillez vous connecter maintenant !" });
-        const access_token = createAccessToken({ id: user.id });
-        res.json({ access_token });
-      });
+      jwt.verify(
+        refresh_token,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, user) => {
+          if (err)
+            return res
+              .status(400)
+              .json({ msg: "Veuillez vous connecter maintenant !" });
+          const access_token = createAccessToken({ id: user.id });
+          res.json({ access_token });
+        }
+      );
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -132,12 +135,9 @@ const userCtrl = {
   },
   resetPassword: async (req, res) => {
     try {
-      const { password,id } = req.body;
+      const { password, id } = req.body;
       const passwordHash = await bcrypt.hash(password, 12);
-      await Users.update(
-        { password: passwordHash },
-        { where: { id: id } }
-      );
+      await Users.update({ password: passwordHash }, { where: { id: id } });
       res.json({ msg: "Le mot de passe a été changé avec succès !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -185,6 +185,15 @@ const userCtrl = {
       const { role } = req.body;
       await Users.update({ role }, { where: { id: req.params.id } });
       res.json({ msg: "Mise à jour réussie !" });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+  updateUserProfile: async (req, res) => {
+    try {
+      const {name,password} = req.body;
+      await Users.update({ name, password }, { where: { id: req.params.id } });
+      res.json({ msg: "Profile mise à jour !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
