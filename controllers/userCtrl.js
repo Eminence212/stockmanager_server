@@ -27,7 +27,7 @@ const userCtrl = {
       const newUser = {
         name,
         password: passwordHash,
-        role: role ? role : user.role,
+        role
       };
 
       const activation_token = createActivationToken(newUser);
@@ -42,7 +42,7 @@ const userCtrl = {
         url: url,
       });
     } catch (error) {
-      return res.status(500).json({ msg: error.message });
+      return res.status(500).json({ msg: "Register : " +error.message });
     }
   },
   activateAccount: async (req, res) => {
