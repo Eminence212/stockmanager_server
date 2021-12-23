@@ -159,7 +159,7 @@ const userCtrl = {
   getUsersAllInfor: async (req, res) => {
     try {
       const users = await Users.findAll({
-        attributes: ["id", "name", "avatar", "role","password"],
+        attributes: ["id", "name", "avatar", "role"],
       });
       res.json(users);
     } catch (error) {
