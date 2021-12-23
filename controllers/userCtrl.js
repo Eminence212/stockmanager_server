@@ -159,9 +159,7 @@ const userCtrl = {
   },
   getUsersAllInfor: async (req, res) => {
     try {
-      const users = await Users.findAll({
-        attributes: ["id", "name", "avatar", "role"],
-      });
+      const users = await Users.findAll();
       res.json(users);
     } catch (error) {
       return res.status(500).json({ msg: error.message });
