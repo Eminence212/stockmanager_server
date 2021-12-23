@@ -191,11 +191,15 @@ const userCtrl = {
   },
   updateUserProfile: async (req, res) => {
     try {
-      const {name,password,role,avatar} = req.body;
-      await Users.update(
-        { name, password, role, avatar },
-        { where: { id: req.params.id } }
-      );
+      const user = await Users.findOne({ where: { id: req.params.id } });
+
+      const { name, password, role, avatar } = req.body;
+      const passwordHash = await bcrypt.hash(password, 12);
+      const userToEdit = {
+        name: name.toLowerCase() === user.name.toLowerCase() ? user.name : name,
+        password: password ? passwordHash : user.password,
+      };
+      await Users.update(userToEdit, { where: { id: req.params.id } });
       res.json({ msg: "Profile mise à jour !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
