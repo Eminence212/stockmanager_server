@@ -7,7 +7,7 @@ const { CLIENT_URL } = process.env;
 const userCtrl = {
   register: async (req, res) => {
     try {
-      const { name, password } = req.body;
+      const { name, password, role } = req.body;
       if (!name || !password)
         return res
           .status(400)
@@ -27,6 +27,7 @@ const userCtrl = {
       const newUser = {
         name,
         password: passwordHash,
+        role: role ? role : user.role,
       };
 
       const activation_token = createActivationToken(newUser);
