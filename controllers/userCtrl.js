@@ -176,14 +176,20 @@ const userCtrl = {
   updateUser: async (req, res) => {
     try {
       const id = req.params.id;
-      const { name,role } = req.body;
+      const { name, role } = req.body;
       const userById = await Users.findOne({ where: { id: id } });
       if (!userById) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
-      const userToUpdate = await Users.findOne({ where: { name } });
-      if (!userToUpdate) await Users.update({ name,role }, { where: { id: id } });
-      res.json({ msg: "Mise à jour effectuée avec succès !" });
+
+      await Users.update(
+        {
+          name: name ? name : userById.name,
+          role: role ? role : userById.role,
+        },
+        { where: { id: id } }
+      );
+      res.json({ msg: "Mise à jour effectuée avec succès !!" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
