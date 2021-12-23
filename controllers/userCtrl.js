@@ -174,6 +174,21 @@ const userCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
+  updateUser: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const { name } = req.body;
+      const userById = await Users.findOne({ where: { id: id } });
+      if (!userById) {
+        return res.status(404).json({ msg: "Non trouvé" });
+      }
+      const userToUpdate = await Users.findOne({ where: { name } });
+      if (!userToUpdate) await Users.update({ name }, { where: { id: id } });
+      res.json({ msg: "Mise à jour effectuée avec succès !" });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
   updateAvatar: async (req, res) => {
     try {
       const { avatar } = req.body;

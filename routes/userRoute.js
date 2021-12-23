@@ -12,6 +12,7 @@ router.post("/reset", userCtrl.resetPassword);
 router.get("/infor", auth, userCtrl.getUserInfor);
 router.get("/all_infor", auth, authAdmin, userCtrl.getUsersAllInfor);
 router.get("/logout", userCtrl.logout);
+router.patch("/update/:id", auth, userCtrl.updateUser);
 router.patch("/update_avatar", auth, userCtrl.updateAvatar);
 router.patch("/update_role/:id", auth, authAdmin, userCtrl.updateUsersRole);
 router.patch("/update_profil/:id", auth, userCtrl.updateUserProfile);
