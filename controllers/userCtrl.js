@@ -34,8 +34,10 @@ const userCtrl = {
       // const url = `${CLIENT_URL}/user/activate/${activation_token}`;
       const url = `/user/activate/${activation_token}`;
       // sendMail(email, url,'Confirmer adresse Email');
+
+      await Users.create(newUser);
       res.json({
-        msg: "Enregistrement réussi ! Veuillez activer votre compte.",
+        msg: "Enregistrement réussi !",
         url: url,
       });
     } catch (error) {
@@ -192,7 +194,7 @@ const userCtrl = {
   },
   updateUserProfile: async (req, res) => {
     try {
-      const {name,password,role,avatar} = req.body;
+      const { name, password, role, avatar } = req.body;
       await Users.update(
         { name, password, role, avatar },
         { where: { id: req.params.id } }
