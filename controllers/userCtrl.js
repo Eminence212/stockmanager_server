@@ -126,8 +126,9 @@ const userCtrl = {
       // sendMail(email,url,"Reset your password")
 
       res.json({
-        msg: "Envoyez à nouveau le mot de passe",
         url: url,
+        access_token: access_token,
+        id: user.id,
       });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
