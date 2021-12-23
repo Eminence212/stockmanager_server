@@ -42,7 +42,7 @@ const userCtrl = {
         url: url,
       });
     } catch (error) {
-      return res.status(500).json({ msg: "Register : " +error.message });
+      return res.status(500).json({ msg: error.message });
     }
   },
   activateAccount: async (req, res) => {
