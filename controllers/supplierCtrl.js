@@ -48,7 +48,7 @@ const supplierCtrl = {
   getAll: async (req, res) => {
     try {
       const customers = await Suppliers.findAll({
-        include: [{ model: Procurements }, { model: Articles }],
+        include: [{ model: Procurements }],
       });
       // Procurements 
       if (!customers) {
