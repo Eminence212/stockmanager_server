@@ -47,9 +47,7 @@ const supplierCtrl = {
   },
   getAll: async (req, res) => {
     try {
-      const customers = await Suppliers.findAll({
-        include: [{ model: Procurements }],
-      });
+      const customers = await Suppliers.findAll({ include: Procurements});
       // Procurements 
       if (!customers) {
         return res.status(404).json({ msg: "Non trouvé" });
