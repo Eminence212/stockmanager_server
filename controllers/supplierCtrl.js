@@ -12,7 +12,7 @@ const supplierCtrl = {
       if (supplierName)
         return res
           .status(400)
-          .json({ msg: `Le fournisseur : ${supplierName.nom} existe déjà.` });
+          .json({ msg: `Le fournisseur : ${supplierName.name} existe déjà.` });
       const supplierContact = await Suppliers.findOne({
         where: { contact },
       });
