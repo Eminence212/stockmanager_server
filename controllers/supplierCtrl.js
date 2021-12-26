@@ -1,4 +1,10 @@
-const { Suppliers, Procurements } = require("../models");
+const {
+  Suppliers,
+  Procurements,
+  Articles,
+  Families,
+  Units,
+} = require("../models");
 
 const supplierCtrl = {
   register: async (req, res) => {
@@ -47,8 +53,21 @@ const supplierCtrl = {
   },
   getAll: async (req, res) => {
     try {
-      const customers = await Suppliers.findAll({ include: Procurements});
-      // Procurements 
+      const customers = await Suppliers.findAll({
+        include: {
+          model: Procurements,
+          include: [
+            {
+              model: Articles,
+              include: { model: Families },
+            },
+            {
+              model: Units,
+            },
+          ],
+        },
+      });
+      // Procurements
       if (!customers) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
@@ -75,7 +94,8 @@ const supplierCtrl = {
           msg: "Le contact doit comporter 10 caractères. (ex:082xxxxxxx)",
         });
       const supplierName = await Suppliers.findOne({ where: { name } });
-      if (!supplierName) await Suppliers.update({ name }, { where: { id: id } });
+      if (!supplierName)
+        await Suppliers.update({ name }, { where: { id: id } });
       const supplierContact = await Suppliers.findOne({ where: { contact } });
       if (!supplierContact)
         await Suppliers.update({ contact }, { where: { id: id } });
