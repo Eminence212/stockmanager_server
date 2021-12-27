@@ -1,4 +1,4 @@
-const { Customers,Commands} = require("../models");
+const { Customers, Commands,Status } = require("../models");
 const customerCtrl = {
   register: async (req, res) => {
     try {
@@ -37,7 +37,7 @@ const customerCtrl = {
       if (!customer) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
-      
+
       res.json(customer);
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -45,7 +45,9 @@ const customerCtrl = {
   },
   getAll: async (req, res) => {
     try {
-      const customers = await Customers.findAll({ include: Commands });
+      const customers = await Customers.findAll({
+        include: { model: Commands,include:{model:Status} },
+      });
       if (!customers) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
@@ -71,13 +73,14 @@ const customerCtrl = {
         return res.status(400).json({
           msg: "Le contact doit comporter 10 caractères. (ex:082xxxxxxx)",
         });
-      const customerName = await Customers.findOne({ where: {name } });
-      if (!customerName) await Customers.update({name }, { where: { id: id } });
+      const customerName = await Customers.findOne({ where: { name } });
+      if (!customerName)
+        await Customers.update({ name }, { where: { id: id } });
       const customerContact = await Customers.findOne({ where: { contact } });
       if (!customerContact)
         await Customers.update({ contact }, { where: { id: id } });
       if (!customerContact && !customerName)
-        await Customers.update({name, contact }, { where: { id: id } });
+        await Customers.update({ name, contact }, { where: { id: id } });
       res.json({ msg: "Mise à jour réussie !" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
