@@ -57,9 +57,11 @@ const customerCtrl = {
         include: {
           model: Commands,
           include: [
-            { model: Status },
+            {
+              model: Status,
+              include: { model: Invoices, include: { model: Settlements } },
+            },
             { model: Distributions, include: { model: Articles } },
-            { model: Invoices, include: { model: Settlements } },
           ],
         },
       });
