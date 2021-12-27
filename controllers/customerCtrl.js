@@ -59,7 +59,6 @@ const customerCtrl = {
           include: [
             {
               model: Status,
-              include: { model: Invoices, include: { model: Settlements } },
             },
             { model: Distributions, include: { model: Articles } },
           ],
