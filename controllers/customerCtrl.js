@@ -61,7 +61,7 @@ const customerCtrl = {
               model: Status,
             },
             { model: Distributions, include: { model: Articles } },
-            { model: Invoices },
+            { model: Invoices,include:{model:Settlements} },
           ],
         },
       });
