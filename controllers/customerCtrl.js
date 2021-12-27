@@ -1,4 +1,10 @@
-const { Customers, Commands,Status } = require("../models");
+const {
+  Customers,
+  Commands,
+  Status,
+  Invoices,
+  Settlements,
+} = require("../models");
 const customerCtrl = {
   register: async (req, res) => {
     try {
@@ -46,7 +52,13 @@ const customerCtrl = {
   getAll: async (req, res) => {
     try {
       const customers = await Customers.findAll({
-        include: { model: Commands,include:{model:Status} },
+        include: {
+          model: Commands,
+          include: [
+            { model: Status },
+            { model: Invoices, include: { model: Settlements } },
+          ],
+        },
       });
       if (!customers) {
         return res.status(404).json({ msg: "Non trouvé" });
