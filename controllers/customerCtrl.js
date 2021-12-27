@@ -4,6 +4,8 @@ const {
   Status,
   Distributions,
   Articles,
+  Invoices,
+  Settlements,
 } = require("../models");
 const customerCtrl = {
   register: async (req, res) => {
@@ -56,7 +58,8 @@ const customerCtrl = {
           model: Commands,
           include: [
             { model: Status },
-            { model: Distributions,include:{model:Articles}},
+            { model: Distributions, include: { model: Articles } },
+            { model: Invoices, include: { model: Settlements } },
           ],
         },
       });
