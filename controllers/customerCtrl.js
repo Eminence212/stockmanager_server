@@ -62,7 +62,6 @@ const customerCtrl = {
             },
             { model: Distributions, include: { model: Articles } },
             { model: Invoices, include: { model: Settlements } },
-            {model:Articles}
           ],
         },
       });
