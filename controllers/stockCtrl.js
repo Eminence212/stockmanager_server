@@ -3,7 +3,7 @@ const stockCtrl = {
   register: async (req, res) => {
     try {
       const { quantityStock, articleId } = req.body;
-      if (quantityStock === 0 || articleId === 0)
+      if (quantityStock < 0 || articleId <= 0)
         return res
           .status(400)
           .json({ msg: "Veuillez remplir les champs vide." });
