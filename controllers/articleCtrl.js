@@ -52,8 +52,8 @@ const articleCtrl = {
         minQuantity,
         familyId,
       };
-      await Articles.create(newArticle);
-      res.json({ msg: "Article ajouté avec succès !" });
+      const article = await Articles.create(newArticle);
+      res.json({ msg: "Article ajouté avec succès !",article });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
