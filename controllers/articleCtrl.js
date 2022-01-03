@@ -1,6 +1,7 @@
-const { Articles, Families, Stocks } = require("../models");
+const { Articles, Families, Stocks, sequelize } = require("../models");
 const articleCtrl = {
   register: async (req, res) => {
+    const t = await sequelize.transaction();
     try {
       const {
         reference,
@@ -52,19 +53,22 @@ const articleCtrl = {
         minQuantity,
         familyId,
       };
-      const article = await Articles.create(newArticle);
-      res.json({ msg: "Article ajouté avec succès !",article });
+      const article = await Articles.create(newArticle, { transaction: t });
+      await Stocks.create(
+        { quantityStock: 0, articleId: article.id },
+        { transaction: t }
+      );
+     await t.commit();
+      res.json({ msg: "Article ajouté avec succès !"});
     } catch (error) {
+       await t.rollback();
       return res.status(500).json({ msg: error.message });
     }
   },
   getById: async (req, res) => {
     try {
       const article = await Articles.findByPk(req.params.id, {
-        include: [
-          { model: Stocks },
-          { model: Families },
-        ],
+        include: [{ model: Stocks }, { model: Families }],
       });
       if (article) {
         res.json(article);
@@ -78,10 +82,7 @@ const articleCtrl = {
   getAll: async (req, res) => {
     try {
       const articles = await Articles.findAll({
-        include: [
-          { model: Stocks },
-          { model: Families },
-        ],
+        include: [{ model: Stocks }, { model: Families }],
       });
       if (articles) {
         res.json(articles);

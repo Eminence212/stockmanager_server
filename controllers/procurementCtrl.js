@@ -1,13 +1,14 @@
-const {
+const {sequelize,
   Procurements,
   Articles,
   Suppliers,
   Units,
   Stocks,
 } = require("../models");
+
 const procurementCtrl = {
   register: async (req, res) => {
-    const t = await Sequelize.transaction();
+    const t = await sequelize.transaction();
     try {
       const {
         initQuantity,
@@ -53,7 +54,8 @@ const procurementCtrl = {
           quantityStock: initQuantity + supplyQuantity,
           articleId,
         },
-        { where: { articleId: articleId }, transaction: t }
+        { where: { articleId: articleId } },
+        { transaction: t }
       );
     
        await t.commit();
