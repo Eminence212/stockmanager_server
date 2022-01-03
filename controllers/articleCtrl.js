@@ -1,4 +1,4 @@
-const { Articles, Families, Stocks, Units, sequelize } = require("../models");
+const { Articles, Families, Stocks, sequelize } = require("../models");
 const articleCtrl = {
   register: async (req, res) => {
     const t = await sequelize.transaction();
@@ -82,7 +82,7 @@ const articleCtrl = {
   getAll: async (req, res) => {
     try {
       const articles = await Articles.findAll({
-        include: [{ model: Stocks }, { model: Families }, { model: Units }],
+        include: [{ model: Stocks }, { model: Families }],
       });
       if (articles) {
         res.json(articles);

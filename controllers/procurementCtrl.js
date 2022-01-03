@@ -82,7 +82,7 @@ const procurementCtrl = {
   getAll: async (req, res) => {
     try {
       const procurement = await Procurements.findAll({
-        include: [{ model: Articles }, { model: Suppliers }],
+        include: [{ model: Articles }, { model: Suppliers }, { model: Units }],
       });
       if (procurement) {
         res.json(procurement);
