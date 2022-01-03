@@ -48,13 +48,14 @@ const procurementCtrl = {
         unitId,
       };
       await Procurements.create(newProcurement, { transaction: t });
-      await Stocks.create(
+      await Stocks.update(
         {
           quantityStock: initQuantity + supplyQuantity,
           articleId,
         },
-        { transaction: t }
+        { where: { articleId: articleId }, transaction: t }
       );
+    
        await t.commit();
       res.json({ msg: "Approvisionnement effectué avec succès !" });
     } catch (error) {
