@@ -1,6 +1,13 @@
-const { Procurements, Articles, Suppliers, Units } = require("../models");
+const {
+  Procurements,
+  Articles,
+  Suppliers,
+  Units,
+  Stocks,
+} = require("../models");
 const procurementCtrl = {
   register: async (req, res) => {
+    const t = await Sequelize.transaction();
     try {
       const {
         initQuantity,
@@ -40,9 +47,18 @@ const procurementCtrl = {
         supplierId,
         unitId,
       };
-      await Procurements.create(newProcurement);
+      await Procurements.create(newProcurement, { transaction: t });
+      await Stocks.create(
+        {
+          quantityStock: initQuantity + supplyQuantity,
+          articleId,
+        },
+        { transaction: t }
+      );
+       await t.commit();
       res.json({ msg: "Approvisionnement effectué avec succès !" });
     } catch (error) {
+      await t.rollback();
       return res.status(500).json({ msg: error.message });
     }
   },
