@@ -3,7 +3,7 @@ const articleCtrl = require("../controllers/articleCtrl");
 const auth = require("../middlewares/auth");
 const authAdmin = require("../middlewares/authAdmin");
 
-router.post("/add", articleCtrl.register);
+router.post("/add", auth, articleCtrl.register);
 router.get("/:id", auth, articleCtrl.getById);
 router.get("/", auth, articleCtrl.getAll);
 router.patch("/update/:id", auth, authAdmin, articleCtrl.update);
