@@ -1,4 +1,4 @@
-const { Articles, Families, Stocks, sequelize } = require("../models");
+const { Articles, Families, Stocks, Units, sequelize } = require("../models");
 const articleCtrl = {
   register: async (req, res) => {
     const t = await sequelize.transaction();
@@ -58,10 +58,10 @@ const articleCtrl = {
         { quantityStock: 0, articleId: article.id },
         { transaction: t }
       );
-     await t.commit();
-      res.json({ msg: "Article ajouté avec succès !"});
+      await t.commit();
+      res.json({ msg: "Article ajouté avec succès !" });
     } catch (error) {
-       await t.rollback();
+      await t.rollback();
       return res.status(500).json({ msg: error.message });
     }
   },
@@ -82,7 +82,7 @@ const articleCtrl = {
   getAll: async (req, res) => {
     try {
       const articles = await Articles.findAll({
-        include: [{ model: Stocks }, { model: Families }],
+        include: [{ model: Stocks }, { model: Families }, { model: Units }],
       });
       if (articles) {
         res.json(articles);
