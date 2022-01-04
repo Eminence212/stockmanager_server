@@ -98,45 +98,29 @@ const procurementCtrl = {
   update: async (req, res) => {
     try {
       const id = req.params.id;
-      const { supplyQuantity, purchasePrice, articleId, supplierId, unitId } =
-        req.body;
+      const { purchasePrice, supplierId, unitId } = req.body;
       const procurement = await Procurements.findOne({ where: { id: id } });
       if (!procurement) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
-      if (
-        supplyQuantity === 0 ||
-        purchasePrice === 0 ||
-        articleId === 0 ||
-        supplierId === 0 ||
-        unitId === 0
-      )
+      if (purchasePrice === 0 || supplierId === 0 || unitId === 0)
         return res
           .status(400)
           .json({ msg: "Veuillez remplir les champs vide." });
 
-      if (supplyQuantity < 0)
-        return res.status(400).json({
-          msg: `La quantité ne peut être négative.`,
-        });
       if (purchasePrice < 0)
         return res.status(400).json({
           msg: `Le prix d'achat ne peut être négatif.`,
         });
 
       if (
-        procurement.supplyQuantity !== supplyQuantity ||
         procurement.purchasePrice !== purchasePrice ||
-        procurement.articleId !== articleId ||
         procurement.supplierId !== supplierId ||
         procurement.unitId !== unitId
       )
         await Procurements.update(
           {
-            procurementDate: new Date(),
-            supplyQuantity,
             purchasePrice,
-            articleId,
             supplierId,
             unitId,
           },
@@ -169,8 +153,7 @@ const procurementCtrl = {
           quantityStock: stock.quantityStock - quantity,
           articleId,
         },
-        { where: { articleId: articleId } ,transaction: t },
-
+        { where: { articleId: articleId }, transaction: t }
       );
       await t.commit();
       res.json({ msg: "Supprimé avec succès !" });
