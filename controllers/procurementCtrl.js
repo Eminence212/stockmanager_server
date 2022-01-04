@@ -6,6 +6,7 @@ const {
   Units,
   Stocks,
 } = require("../models");
+const { Op } = require("sequelize");
 
 const procurementCtrl = {
   register: async (req, res) => {
@@ -85,6 +86,52 @@ const procurementCtrl = {
       const procurement = await Procurements.findAll({
         include: [{ model: Articles }, { model: Suppliers }, { model: Units }],
       });
+      if (procurement) {
+        res.json(procurement);
+      } else {
+        return res.status(404).json({ msg: "Non trouvé" });
+      }
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+  getFilter: async (req, res) => {
+    try {
+      const { dates, article } = req.body;
+      let query = {};
+      let startDate, endDate;
+      startDate = new Date(new Date(dates.initialDate).setUTCHours(0, 0, 0));
+      endDate = new Date(new Date(dates.terminalDate).setUTCHours(23, 59, 59));
+
+      if (article.id > 0 && dates.initialDate !== "") {
+        query = {
+          [Op.and]: [
+            {
+              procurementDate: {
+                [Op.between]: [startDate, endDate],
+              },
+            },
+            { articleId: article.id },
+          ],
+        };
+      } else if (article.id > 0 && dates.initialDate === "") {
+        query = { articleId: article.id };
+      } else if (article.id === 0 && dates.initialDate !== "") {
+        query = {
+          procurementDate: {
+            [Op.between]: [startDate, endDate],
+          },
+        };
+      } else {
+        query = {};
+      }
+  
+      const procurement = await Procurements.findAll({
+        include: [{ model: Articles }, { model: Suppliers }, { model: Units }],
+        order: [["procurementDate", "DESC"]],
+        where: query,
+      });
+
       if (procurement) {
         res.json(procurement);
       } else {
