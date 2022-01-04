@@ -3,7 +3,7 @@ const procurementCtrl = require("../controllers/procurementCtrl");
 const auth = require("../middlewares/auth");
 const authAdmin = require("../middlewares/authAdmin");
 
-router.get("/filter", procurementCtrl.getFilter);
+router.get("/filter", auth, procurementCtrl.getFilter);
 router.post("/add", auth, procurementCtrl.register);
 router.get("/:id", auth, procurementCtrl.getById);
 router.get("/", auth, procurementCtrl.getAll);
