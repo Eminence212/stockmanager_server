@@ -1,4 +1,5 @@
-const {sequelize,
+const {
+  sequelize,
   Procurements,
   Articles,
   Suppliers,
@@ -57,8 +58,8 @@ const procurementCtrl = {
         { where: { articleId: articleId } },
         { transaction: t }
       );
-    
-       await t.commit();
+
+      await t.commit();
       res.json({ msg: "Approvisionnement effectué avec succès !" });
     } catch (error) {
       await t.rollback();
@@ -148,15 +149,33 @@ const procurementCtrl = {
   },
 
   delete: async (req, res) => {
+    const t = await sequelize.transaction();
     try {
       const id = req.params.id;
+      const { quantity, articleId } = req.body;
+
       const procurementById = await Procurements.findOne({ where: { id: id } });
       if (!procurementById) {
         return res.status(404).json({ msg: "Non trouvé" });
       }
-      await Procurements.destroy({ where: { id: id } });
+      await Procurements.destroy({ where: { id: id }, transaction: t });
+      const stock = await Stocks.findOne({
+        where: { articleId: articleId },
+        transaction: t,
+      });
+
+      await Stocks.update(
+        {
+          quantityStock: stock.quantityStock - quantity,
+          articleId,
+        },
+        { where: { articleId: articleId } ,transaction: t },
+
+      );
+      await t.commit();
       res.json({ msg: "Supprimé avec succès !" });
     } catch (error) {
+      await t.rollback();
       return res.status(500).json({ msg: error.message });
     }
   },
