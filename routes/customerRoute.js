@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const customerCtrl = require("../controllers/customerCtrl");
 const auth = require("../middlewares/auth");
-const authAdmin = require("../middlewares/authAdmin");
+const authAdmin = require("../middlewares/authAdmin");  
 
 router.post("/add", auth, customerCtrl.register);
 router.get("/:id", auth, customerCtrl.getById);
