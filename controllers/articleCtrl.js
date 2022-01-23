@@ -105,7 +105,6 @@ const articleCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
-
   update: async (req, res) => {
     try {
       const id = req.params.id;
@@ -169,7 +168,6 @@ const articleCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
-
   delete: async (req, res) => {
     try {
       const id = req.params.id;
