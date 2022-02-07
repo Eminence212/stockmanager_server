@@ -10,23 +10,6 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
-// // Swagger options
-// const swaggerOptions = {
-//   swaggerDefinition: {
-//     info: {
-//       title:"Stock Manager API",
-//       description: "Stock manager API information",
-//       contact: {
-//         name:"Eminence Developer"
-//       },
-//       servers:["https://stockmanager-app.herokuapp.com"]
-//     }
-//   },
-//   apis:["./routes/*.js"]
-// }
-// const swaggerDocs = swaggerJsDoc(swaggerOptions)
-// app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
-
 // Routes
 app.use("/user", require("./routes/userRoute")); //Utilisateur
 app.use("/customer", require("./routes/customerRoute")); //client
