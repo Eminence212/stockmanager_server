@@ -101,8 +101,12 @@ const procurementCtrl = {
       const { dates, article } = req.body;
       let query = {};
       let startDate, endDate;
-      startDate = new Date(new Date(dates.initialDate).setUTCHours(0, 0, 0));
-      endDate = new Date(new Date(dates.terminalDate).setUTCHours(23, 59, 59));
+      startDate = dates.initialDate
+        ? new Date(new Date(dates.initialDate).setUTCHours(0, 0, 0))
+        : "";
+      endDate = dates.terminalDate
+        ? new Date(new Date(dates.terminalDate).setUTCHours(23, 59, 59))
+        : "";
 
       if (article.id > 0 && dates.initialDate !== "") {
         query = {
@@ -126,7 +130,7 @@ const procurementCtrl = {
       } else {
         query = {};
       }
-  
+
       const procurement = await Procurements.findAll({
         include: [{ model: Articles }, { model: Suppliers }, { model: Units }],
         order: [["procurementDate", "DESC"]],
