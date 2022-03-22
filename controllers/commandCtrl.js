@@ -1,29 +1,36 @@
-const { Commands, Status, Customers } = require("../models");
+const {
+  sequelize,
+  Distributions,
+  Commands,
+  Status,
+  Customers,
+} = require('../models');
 const commandCtrl = {
   register: async (req, res) => {
+    const t = await sequelize.transaction();
     try {
-      const { statusId, customerId } = req.body;
+      const { statusId, customerId, articles } = req.body;
 
-      if (statusId === 0 || customerId == 0)
-        return res
-          .status(400)
-          .json({ msg: "Veuillez remplir les champs vide." });
-
-      if (statusId < 0)
+      if (articles.length == 0)
         return res.status(400).json({
-          msg: `Le status choisie n'existe pas.`,
-        });
-      if (customerId < 0)
-        return res.status(400).json({
-          msg: `Le client choisie n'existe pas.`,
+          msg: 'Cette commande est vide. Veuillez ajouter un ou plusieurs articles.',
         });
 
-      await Commands.create({
+      if (statusId <= 0)
+        return res.status(400).json({
+          msg: `Veuillez sélectionner un status.`,
+        });
+      if (customerId <= 0)
+        return res.status(400).json({
+          msg: `Veuillez sélectionner un client.`,
+        });
+
+      const cmd = await Commands.create({
         dateCommand: new Date(),
         statusId,
         customerId,
       });
-      res.json({ msg: "Commande ajoutée avec succès !" });
+      res.json({ msg: 'Commande ajoutée avec succès !', cmd });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -36,7 +43,7 @@ const commandCtrl = {
       if (command) {
         res.json(command);
       } else {
-        return res.status(404).json({ msg: "Non trouvée" });
+        return res.status(404).json({ msg: 'Non trouvée' });
       }
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -50,7 +57,7 @@ const commandCtrl = {
       if (commands) {
         res.json(commands);
       } else {
-        return res.status(404).json({ msg: "Non trouvée" });
+        return res.status(404).json({ msg: 'Non trouvée' });
       }
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -65,7 +72,7 @@ const commandCtrl = {
       if (statusId === 0 || customerId == 0)
         return res
           .status(400)
-          .json({ msg: "Veuillez remplir les champs vide." });
+          .json({ msg: 'Veuillez remplir les champs vide.' });
 
       if (statusId < 0)
         return res.status(400).json({
@@ -84,7 +91,7 @@ const commandCtrl = {
           },
           { where: { id: id } }
         );
-      res.json({ msg: "Mise à jour réussie !" });
+      res.json({ msg: 'Mise à jour réussie !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -95,14 +102,14 @@ const commandCtrl = {
       const id = req.params.id;
       const commandById = await Commands.findOne({ where: { id: id } });
       if (!commandById) {
-        return res.status(404).json({ msg: "Non trouvée" });
+        return res.status(404).json({ msg: 'Non trouvée' });
       }
       if (!id)
         return res
           .status(400)
           .json({ msg: "L'identifiant de la commande est vide." });
       await Commands.destroy({ where: { id: id } });
-      res.json({ msg: "Supprimée avec succès !" });
+      res.json({ msg: 'Supprimée avec succès !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
