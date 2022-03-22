@@ -58,7 +58,7 @@ const commandCtrl = {
       // }
       // const result = await Promise.all(statements);
       await t.commit();
-      res.json({ msg: 'Commande ajoutée avec succès !', cmd });
+      res.json({ msg: 'Commande ajoutée avec succès !'});
     } catch (error) {
       await t.rollback();
       return res.status(500).json({ msg: error.message });
