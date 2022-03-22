@@ -25,31 +25,13 @@ const commandCtrl = {
           msg: `Veuillez sélectionner un client.`,
         });
 
-      const cmd = await Commands.create(
-        {
-          dateCommand: new Date(),
-          statusId,
-          customerId,
-        },
-        { transaction: t }
-      );
-      articles.map(article => {
-        await Distributions.create(
-          {
-            dateDescription: new Date(),
-            quantityDistributed: article.quantite,
-            distributionPrice: article.price,
-            distributionTva: article.tva,
-            commandId: cmd.id,
-            articleId: article.id,
-          },
-          { transaction: t }
-        );
+      const cmd = await Commands.create({
+        dateCommand: new Date(),
+        statusId,
+        customerId,
       });
-      await t.commit();
-      res.json({ msg: 'Commande sauvegardée avec succès !' });
+      res.json({ msg: 'Commande ajoutée avec succès !',cmd });
     } catch (error) {
-      await t.rollback();
       return res.status(500).json({ msg: error.message });
     }
   },
