@@ -33,18 +33,21 @@ const commandCtrl = {
         },
         { transaction: t }
       );
-      cmd && articles.map(item => {});
-      await Distributions.create(
-        {
-          dateDescription: new Date(),
-          quantityDistributed: item.quantite,
-          distributionPrice: item.price,
-          distributionTva: item.tva,
-          commandId: cmd.id,
-          articleId: item.id,
-        },
-        { transaction: t }
-      );
+      cmd &&
+        articles.map(item => {
+          await Distributions.create(
+            {
+              dateDescription: new Date(),
+              quantityDistributed: item.quantite,
+              distributionPrice: item.price,
+              distributionTva: item.tva,
+              commandId: cmd.id,
+              articleId: item.id,
+            },
+            { transaction: t }
+          );
+        });
+
       await t.commit();
 
       res.json({ msg: 'Commande ajoutée avec succès !', cmd });
