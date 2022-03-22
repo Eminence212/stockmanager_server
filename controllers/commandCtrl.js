@@ -47,7 +47,7 @@ const commandCtrl = {
         );
       });
       await t.commit();
-      res.json({ msg: 'Commande ajoutée avec succès !' });
+      res.json({ msg: 'Commande sauvegardée avec succès !' });
     } catch (error) {
       await t.rollback();
       return res.status(500).json({ msg: error.message });
