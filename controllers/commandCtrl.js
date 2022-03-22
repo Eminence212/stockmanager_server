@@ -47,16 +47,16 @@ const commandCtrl = {
       const statements = [];
       const tableName = 'Stocks';
 
-      // for (let i = 0; i < articles.length; i++) {
-      //   statements.push(
-      //     sequelize.query(
-      //       `UPDATE ${tableName} 
-      // SET quantityStock='${articles[i].stock}' 
-      // WHERE id=${articles[i].id};`
-      //     )
-      //   );
-      // }
-      // const result = await Promise.all(statements);
+      for (let i = 0; i < articles.length; i++) {
+        statements.push(
+          sequelize.query(
+            `UPDATE ${tableName} 
+      SET quantityStock='${articles[i].stock}' 
+      WHERE id=${articles[i].id};`
+          )
+        );
+      }
+      const result = await Promise.all(statements);
       await t.commit();
       res.json({ msg: 'Commande ajoutée avec succès !'});
     } catch (error) {
