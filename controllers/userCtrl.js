@@ -1,6 +1,6 @@
-const { Users } = require("../models");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { Users } = require('../models');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const { CLIENT_URL } = process.env;
 
@@ -11,7 +11,7 @@ const userCtrl = {
       if (!name || !password)
         return res
           .status(400)
-          .json({ msg: "Veuillez remplir tous les champs." });
+          .json({ msg: 'Veuillez remplir tous les champs.' });
       const user = await Users.findOne({ where: { name } });
       if (user)
         return res
@@ -20,14 +20,14 @@ const userCtrl = {
 
       if (password.length < 6)
         return res.status(400).json({
-          msg: "Le mot de passe doit comporter au moins 6 caractères.",
+          msg: 'Le mot de passe doit comporter au moins 6 caractères.',
         });
       const passwordHash = await bcrypt.hash(password, 12);
 
       const newUser = {
         name,
         password: passwordHash,
-        role
+        role,
       };
 
       const activation_token = createActivationToken(newUser);
@@ -38,7 +38,7 @@ const userCtrl = {
 
       await Users.create(newUser);
       res.json({
-        msg: "Enregistrement réussi !",
+        msg: 'Enregistrement réussi !',
         url: url,
       });
     } catch (error) {
@@ -61,7 +61,7 @@ const userCtrl = {
           .json({ msg: "Ce nom d'utilisateur existe déjà." });
       const newUser = { name, password };
       await Users.create(newUser);
-      res.json({ msg: "Votre compte a été activé !" });
+      res.json({ msg: 'Votre compte a été activé !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -77,15 +77,15 @@ const userCtrl = {
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch)
-        return res.status(400).json({ msg: "Le mot de passe est incorrect." });
+        return res.status(400).json({ msg: 'Le mot de passe est incorrect.' });
 
       const refresh_token = createRefreshToken({ id: user.id });
-      res.cookie("refreshtoken", refresh_token, {
+      res.cookie('refreshtoken', refresh_token, {
         httpOnly: true,
-        path: "/user/refresh_token",
+        path: '/user/refresh_token',
         maxAge: 7 * 24 * 60 * 60 * 1000, //7 days
       });
-      res.json({ msg: "Connexion réussie !", refresh_token });
+      res.json({ msg: 'Connexion réussie !', refresh_token });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -97,7 +97,7 @@ const userCtrl = {
       if (!refresh_token)
         return res
           .status(400)
-          .json({ msg: "Veuillez vous connecter maintenant !" });
+          .json({ msg: 'Veuillez vous connecter maintenant !' });
       jwt.verify(
         refresh_token,
         process.env.REFRESH_TOKEN_SECRET,
@@ -105,7 +105,7 @@ const userCtrl = {
           if (err)
             return res
               .status(400)
-              .json({ msg: "Veuillez vous connecter maintenant !" });
+              .json({ msg: 'Veuillez vous connecter maintenant !' });
           const access_token = createAccessToken({ id: user.id });
           res.json({ access_token });
         }
@@ -142,7 +142,7 @@ const userCtrl = {
       const { password, id } = req.body;
       const passwordHash = await bcrypt.hash(password, 12);
       await Users.update({ password: passwordHash }, { where: { id: id } });
-      res.json({ msg: "Le mot de passe a été changé avec succès !" });
+      res.json({ msg: 'Le mot de passe a été changé avec succès !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -150,7 +150,7 @@ const userCtrl = {
   getUserInfor: async (req, res) => {
     try {
       const user = await Users.findByPk(req.user.id, {
-        attributes: ["id", "name", "avatar", "role"],
+        attributes: ['id', 'name', 'avatar', 'role'],
       });
       res.json(user);
     } catch (error) {
@@ -167,8 +167,8 @@ const userCtrl = {
   },
   logout: async (req, res) => {
     try {
-      res.clearCookie("refreshtoken", { path: "/user/refresh_token" });
-      return res.json({ msg: "Déconnecté." });
+      res.clearCookie('refreshtoken', { path: '/user/refresh_token' });
+      return res.json({ msg: 'Déconnecté.' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -179,7 +179,7 @@ const userCtrl = {
       const { name, role } = req.body;
       const userById = await Users.findOne({ where: { id: id } });
       if (!userById) {
-        return res.status(404).json({ msg: "Non trouvé" });
+        return res.status(404).json({ msg: 'Non trouvé' });
       }
 
       await Users.update(
@@ -189,7 +189,7 @@ const userCtrl = {
         },
         { where: { id: id } }
       );
-      res.json({ msg: "Mise à jour effectuée avec succès !!" });
+      res.json({ msg: 'Mise à jour effectuée avec succès !!' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -198,7 +198,7 @@ const userCtrl = {
     try {
       const { avatar } = req.body;
       await Users.update({ avatar }, { where: { id: req.user.id } });
-      res.json({ msg: "Mise à jour réussie !" });
+      res.json({ msg: 'Mise à jour réussie !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -219,7 +219,7 @@ const userCtrl = {
         { name, password, role, avatar },
         { where: { id: req.params.id } }
       );
-      res.json({ msg: "Profile mise à jour !" });
+      res.json({ msg: 'Profile mise à jour !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -227,25 +227,25 @@ const userCtrl = {
   deleteUser: async (req, res) => {
     try {
       await Users.destroy({ where: { id: req.params.id } });
-      res.json({ msg: "Supprimé avec succès !" });
+      res.json({ msg: 'Supprimé avec succès !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
   },
 };
-const createActivationToken = (payload) => {
+const createActivationToken = payload => {
   return jwt.sign(payload, process.env.ACTIVATION_TOKEN_SECRET, {
-    expiresIn: "5m",
+    expiresIn: '5m',
   });
 };
-const createAccessToken = (payload) => {
+const createAccessToken = payload => {
   return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "55m",
+    expiresIn: '55m',
   });
 };
-const createRefreshToken = (payload) => {
+const createRefreshToken = payload => {
   return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "5d",
+    expiresIn: '5d',
   });
 };
 module.exports = userCtrl;
