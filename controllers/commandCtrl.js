@@ -4,6 +4,7 @@ const {
   Commands,
   Status,
   Customers,
+  Stocks,
 } = require('../models');
 const commandCtrl = {
   register: async (req, res) => {
@@ -44,21 +45,17 @@ const commandCtrl = {
         };
       });
       await Distributions.bulkCreate(listCommands, { transaction: t });
-      const statements = [];
-      const tableName = 'Stocks';
-
-      // for (let i = 0; i < articles.length; i++) {
-      //   statements.push(
-      //     sequelize.query(
-      //       `UPDATE ${tableName} 
-      // SET quantityStock='${articles[i].stock}' 
-      // WHERE id=${articles[i].id};`
-      //     )
-      //   );
-      // }
-      // const result = await Promise.all(statements);
+      articles.map(async item => {
+        await Stocks.update(
+          {
+            quantityStock: item.stock,
+          },
+          { where: { articleId: item.id } },
+          { transaction: t }
+        );
+      });
       await t.commit();
-      res.json({ msg: 'Commande ajoutée avec succès !'});
+      res.json({ msg: 'Commande ajoutée avec succès !' });
     } catch (error) {
       await t.rollback();
       return res.status(500).json({ msg: error.message });
