@@ -29,7 +29,7 @@ const swaggerOptions = {
 };
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 //API documentation
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 /**
  * @swagger
  * definitions:
