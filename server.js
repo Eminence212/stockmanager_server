@@ -18,7 +18,10 @@ const swaggerOptions = {
         email: 'mulemanowa@gmail.com',
       },
       version: '1.0.0',
-      servers: ['http://localhost:5000'],
+      servers: [
+        'http://localhost:5000',
+        'https://api-stockmanager.herokuapp.com',
+      ],
     },
   },
   //['.routes/*.js']
@@ -164,7 +167,7 @@ app.use('/user', require('./routes/userRoute')); //Utilisateur
  *             description: A successful response
  *          500:
  *            description: Failure of response
-  *  /user/reset:
+ *  /user/reset:
  *    post:
  *       tags:
  *       - "User"
