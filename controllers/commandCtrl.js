@@ -5,6 +5,7 @@ const {
   Status,
   Customers,
   Stocks,
+  Invoices,
 } = require('../models');
 const commandCtrl = {
   register: async (req, res) => {
@@ -64,7 +65,12 @@ const commandCtrl = {
   getById: async (req, res) => {
     try {
       const command = await Commands.findByPk(req.params.id, {
-        include: [{ model: Status }, { model: Customers }],
+        include: [
+          { model: Status },
+          { model: Customers },
+          { model: Distributions },
+          { model: Invoices },
+        ],
       });
       if (command) {
         res.json(command);
@@ -78,7 +84,12 @@ const commandCtrl = {
   getAll: async (req, res) => {
     try {
       const commands = await Commands.findAll({
-        include: [{ model: Status }, { model: Customers }],
+        include: [
+          { model: Status },
+          { model: Customers },
+          { model: Distributions },
+          { model: Invoices },
+        ],
       });
       if (commands) {
         res.json(commands);
