@@ -102,9 +102,10 @@ const commandCtrl = {
   },
 
   update: async (req, res) => {
+    const t = await sequelize.transaction();
     try {
       const id = req.params.id;
-      const { statusId, customerId } = req.body;
+      const { statusId, customerId, articles } = req.body;
       const command = await Commands.findOne({ where: { id: id } });
       if (statusId === 0 || customerId == 0)
         return res
@@ -126,10 +127,27 @@ const commandCtrl = {
             statusId,
             customerId,
           },
-          { where: { id: id } }
+          { where: { id: id } },
+          { transaction: t }
         );
+      if (statusId === 1) {
+        articles.map(async item => {
+          const stock = await Stocks.findOne({
+            where: { articleId: item.articleId },
+          });
+          await Stocks.update(
+            {
+              quantityStock: stock.quantityStock + item.quantityDistributed,
+            },
+            { where: { articleId: item.articleId } },
+            { transaction: t }
+          );
+        });
+      }
+      await t.commit();
       res.json({ msg: 'Mise à jour réussie !' });
     } catch (error) {
+      await t.rollback();
       return res.status(500).json({ msg: error.message });
     }
   },
@@ -147,21 +165,6 @@ const commandCtrl = {
           .json({ msg: "L'identifiant de la commande est vide." });
       await Commands.destroy({ where: { id: id } });
       res.json({ msg: 'Supprimée avec succès !' });
-    } catch (error) {
-      return res.status(500).json({ msg: error.message });
-    }
-  },
-  gobackto: async (req, res) => {
-    try {
-      const { quantityStock, articleId } = req.body;
-      const stock = await Stocks.findOne({
-        where: { articleId: articleId },
-      });
-      await Stocks.update(
-        { quantityStock: stock.quantityStock + quantityStock, articleId },
-        { where: { id: stock.id } }
-      );
-      res.status(200).json({ msg: 'Mise à jour réussie !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
