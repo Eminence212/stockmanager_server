@@ -151,5 +151,20 @@ const commandCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
+  gobackto: async (req, res) => {
+    try {
+      const { quantityStock, articleId } = req.body;
+      const stock = await Stocks.findOne({
+        where: { articleId: articleId },
+      });
+      await Stocks.update(
+        { quantityStock: stock.quantityStock + quantityStock, articleId },
+        { where: { id: stock.id } }
+      );
+      res.status(200).json({ msg: 'Mise à jour réussie !' });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
 };
 module.exports = commandCtrl;
