@@ -1,4 +1,4 @@
-const { Invoices, Commands, Settlements } = require('../models');
+const { Invoices, Commands, Settlements, sequelize } = require('../models');
 const invoiceCtrl = {
   register: async (req, res) => {
     const t = await sequelize.transaction();
