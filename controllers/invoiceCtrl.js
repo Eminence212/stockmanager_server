@@ -1,4 +1,4 @@
-const { Invoices, Commands, Settlements } = require("../models");
+const { Invoices, Commands, Settlements } = require('../models');
 const invoiceCtrl = {
   register: async (req, res) => {
     try {
@@ -12,13 +12,13 @@ const invoiceCtrl = {
       )
         return res
           .status(400)
-          .json({ msg: "Veuillez remplir les champs vide." });
+          .json({ msg: 'Veuillez remplir les champs vide.' });
       const invoice = await Invoices.findOne({
         where: { internalNumber },
       });
       if (invoice)
         return res.status(400).json({
-          msg: `Commande déjà facturée.`,
+          msg: `Commande déjà facturée pour le numéro : ${internalNumber}`,
         });
 
       await Invoices.create({
@@ -28,7 +28,7 @@ const invoiceCtrl = {
         settlementId,
         commandId,
       });
-      res.json({ msg: "Facturation effectuée avec succès !" });
+      res.json({ msg: 'Facturation effectuée avec succès !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -42,7 +42,7 @@ const invoiceCtrl = {
       if (invoice) {
         res.json(invoice);
       } else {
-        return res.status(404).json({ msg: "Non trouvée" });
+        return res.status(404).json({ msg: 'Non trouvée' });
       }
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -56,7 +56,7 @@ const invoiceCtrl = {
       if (invoices) {
         res.json(invoices);
       } else {
-        return res.status(404).json({ msg: "Non trouvée" });
+        return res.status(404).json({ msg: 'Non trouvée' });
       }
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -76,7 +76,7 @@ const invoiceCtrl = {
       )
         return res
           .status(400)
-          .json({ msg: "Veuillez remplir les champs vide." });
+          .json({ msg: 'Veuillez remplir les champs vide.' });
       await Invoices.update(
         {
           internalNumber,
@@ -86,7 +86,7 @@ const invoiceCtrl = {
         },
         { where: { id: id } }
       );
-      res.json({ msg: "Mise à jour réussie !" });
+      res.json({ msg: 'Mise à jour réussie !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -96,7 +96,7 @@ const invoiceCtrl = {
     try {
       const id = req.params.id;
       await Invoices.destroy({ where: { id: id } });
-      res.json({ msg: "Supprimée avec succès !" });
+      res.json({ msg: 'Supprimée avec succès !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
