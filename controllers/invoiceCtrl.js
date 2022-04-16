@@ -37,14 +37,14 @@ const invoiceCtrl = {
         },
         { transaction: t }
       );
-      // await Commands.update(
-      //   {
-      //     statusId,
-      //     customerId,
-      //   },
-      //   { where: { id: commandId } },
-      //   { transaction: t }
-      // );
+      await Commands.update(
+        {
+          statusId,
+          customerId,
+        },
+        { where: { id: commandId } },
+        { transaction: t }
+      );
       await t.commit();
       res.json({ msg: 'Facturation effectuée avec succès !' });
     } catch (error) {
