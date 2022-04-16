@@ -1,7 +1,7 @@
 const { Invoices, Commands, Settlements, sequelize } = require('../models');
 const invoiceCtrl = {
   register: async (req, res) => {
-    const t = await sequelize.transaction();
+    // const t = await sequelize.transaction();
     try {
       const { internalNumber, receiptNumber, settlementId, commandId } =
         req.body;
@@ -29,19 +29,19 @@ const invoiceCtrl = {
           settlementId,
           commandId,
         },
-        { transaction: t }
+        // { transaction: t }
       );
-      await Commands.update(
-        {
-          statusId : 4
-        },
-        { where: { id: commandId } },
-        { transaction: t }
-      );
-      await t.commit();
+      // await Commands.update(
+      //   {
+      //     statusId : 4
+      //   },
+      //   { where: { id: commandId } },
+      //   { transaction: t }
+      // );
+      // await t.commit();
       res.json({ msg: 'Facturation effectuée avec succès !' });
     } catch (error) {
-      await t.rollback();
+      // await t.rollback();
       return res.status(500).json({ msg: error.message });
     }
   },
