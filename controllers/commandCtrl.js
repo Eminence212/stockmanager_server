@@ -102,10 +102,9 @@ const commandCtrl = {
   },
 
   update: async (req, res) => {
-    const t = await sequelize.transaction();
     try {
       const id = req.params.id;
-      const { statusId, customerId, articles } = req.body;
+      const { statusId, customerId } = req.body;
       const command = await Commands.findOne({ where: { id: id } });
       if (statusId === 0 || customerId == 0)
         return res
@@ -127,27 +126,10 @@ const commandCtrl = {
             statusId,
             customerId,
           },
-          { where: { id: id } },
-          { transaction: t }
+          { where: { id: id } }
         );
-      if (statusId === 1) {
-        articles.map(async item => {
-          const stock = await Stocks.findOne({
-            where: { articleId: item.articleId },
-          });
-          await Stocks.update(
-            {
-              quantityStock: stock.quantityStock + item.quantityDistributed,
-            },
-            { where: { articleId: item.articleId } },
-            { transaction: t }
-          );
-        });
-      }
-      await t.commit();
       res.json({ msg: 'Mise à jour réussie !' });
     } catch (error) {
-      await t.rollback();
       return res.status(500).json({ msg: error.message });
     }
   },
