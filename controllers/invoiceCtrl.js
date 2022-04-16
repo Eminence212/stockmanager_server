@@ -27,21 +27,24 @@ const invoiceCtrl = {
         return res.status(400).json({
           msg: `Commande déjà facturée pour le numéro : ${internalNumber}`,
         });
-      await Invoices.create({
-        internalNumber,
-        invoiceDate: new Date(),
-        receiptNumber,
-        settlementId,
-        commandId,
-      });
-      await Commands.update(
+      await Invoices.create(
         {
-          statusId,
-          customerId,
+          internalNumber,
+          invoiceDate: new Date(),
+          receiptNumber,
+          settlementId,
+          commandId,
         },
-        { where: { id: commandId } },
         { transaction: t }
       );
+      // await Commands.update(
+      //   {
+      //     statusId,
+      //     customerId,
+      //   },
+      //   { where: { id: commandId } },
+      //   { transaction: t }
+      // );
       await t.commit();
       res.json({ msg: 'Facturation effectuée avec succès !' });
     } catch (error) {
