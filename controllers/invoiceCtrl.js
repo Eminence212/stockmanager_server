@@ -1,9 +1,16 @@
 const { Invoices, Commands, Settlements } = require('../models');
 const invoiceCtrl = {
   register: async (req, res) => {
+    const t = await sequelize.transaction();
     try {
-      const { internalNumber, receiptNumber, settlementId, commandId } =
-        req.body;
+      const {
+        internalNumber,
+        receiptNumber,
+        settlementId,
+        commandId,
+        statusId,
+        customerId,
+      } = req.body;
       if (
         !internalNumber ||
         !receiptNumber ||
@@ -20,16 +27,27 @@ const invoiceCtrl = {
         return res.status(400).json({
           msg: `Commande déjà facturée pour le numéro : ${internalNumber}`,
         });
-
-      await Invoices.create({
-        internalNumber,
-        invoiceDate: new Date(),
-        receiptNumber,
-        settlementId,
-        commandId,
-      });
+      await Invoices.create(
+        {
+          internalNumber,
+          invoiceDate: new Date(),
+          receiptNumber,
+          settlementId,
+          commandId,
+        },
+        { transaction: t }
+      );
+      await Commands.update(
+        {
+          statusId,
+          customerId,
+        },
+        { where: { id: commandId } }
+      );
+      await t.commit();
       res.json({ msg: 'Facturation effectuée avec succès !' });
     } catch (error) {
+      await t.rollback();
       return res.status(500).json({ msg: error.message });
     }
   },
