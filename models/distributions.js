@@ -1,17 +1,17 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Distributions extends Model {
     static associate(models) {
       // define association here
       Distributions.belongsTo(models.Commands, {
-        foreignKey: "commandId",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
+        foreignKey: 'commandId',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
       Distributions.belongsTo(models.Articles, {
-        foreignKey: "articleId",
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
+        foreignKey: 'articleId',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
     }
   }
@@ -29,12 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       distributionPrice: {
         type: DataTypes.FLOAT(24, 2),
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0.0,
       },
       distributionTva: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.FLOAT(24, 2),
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0.0,
       },
       commandId: {
         type: DataTypes.INTEGER,
@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Distributions",
+      modelName: 'Distributions',
     }
   );
   return Distributions;

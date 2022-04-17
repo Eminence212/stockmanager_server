@@ -34,12 +34,12 @@ module.exports = (sequelize, DataTypes) => {
       price: {
         type: DataTypes.FLOAT(24, 2),
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0.0,
       },
       tva: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.FLOAT(24, 2),
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: 0.0,
       },
       threshold: {
         type: DataTypes.INTEGER,
