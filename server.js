@@ -1,4 +1,6 @@
 require('dotenv').config();
+const Sentry = require('@sentry/node');
+const Tracing = require('@sentry/tracing');
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -8,6 +10,25 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+
+Sentry.init({
+  dsn: 'https://7d3c85e9c562403dbf7d7ccf3b0bf8c8@o1267571.ingest.sentry.io/6454127',
+  tracesSampleRate: 1.0,
+});
+const transaction = Sentry.startTransaction({
+  op: 'test',
+  name: 'My First Test Transaction',
+});
+
+setTimeout(() => {
+  try {
+    foo();
+  } catch (e) {
+    Sentry.captureException(e);
+  } finally {
+    transaction.finish();
+  }
+}, 99);
 //Swagger configuration
 const swaggerOptions = {
   swaggerDefinition: {
