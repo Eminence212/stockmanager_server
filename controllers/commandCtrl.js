@@ -39,6 +39,7 @@ const commandCtrl = {
         return {
           dateDescription: new Date(),
           quantityDistributed: item.quantite,
+          terminalStock: item.stock,
           distributionPrice: item.price,
           distributionTva: item.tva,
           commandId: cmd.id,

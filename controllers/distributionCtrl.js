@@ -1,4 +1,10 @@
-const { Distributions, Articles, Commands } = require("../models");
+const {
+  Distributions,
+  Articles,
+  Commands,
+  Stocks,
+  Status,
+} = require('../models');
 const distributionCtrl = {
   register: async (req, res) => {
     try {
@@ -13,7 +19,7 @@ const distributionCtrl = {
       if (quantityDistributed === 0 || articleId === 0 || commandId === 0)
         return res
           .status(400)
-          .json({ msg: "Veuillez remplir les champs vide." });
+          .json({ msg: 'Veuillez remplir les champs vide.' });
 
       if (quantityDistributed < 0)
         return res.status(400).json({
@@ -29,7 +35,7 @@ const distributionCtrl = {
         articleId,
       };
       await Distributions.create(newDistribution);
-      res.json({ msg: "Distribution effectuée avec succès !" });
+      res.json({ msg: 'Distribution effectuée avec succès !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -42,7 +48,7 @@ const distributionCtrl = {
       if (distribution) {
         res.json(distribution);
       } else {
-        return res.status(404).json({ msg: "Non trouvée" });
+        return res.status(404).json({ msg: 'Non trouvée' });
       }
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -51,12 +57,15 @@ const distributionCtrl = {
   getAll: async (req, res) => {
     try {
       const distribution = await Distributions.findAll({
-        include: [{ model: Articles }, { model: Commands }],
+        include: [
+          { model: Articles, include: { model: Stocks } },
+          { model: Commands, include: { model: Status } },
+        ],
       });
       if (distribution) {
         res.json(distribution);
       } else {
-        return res.status(404).json({ msg: "Non trouvée" });
+        return res.status(404).json({ msg: 'Non trouvée' });
       }
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -69,12 +78,12 @@ const distributionCtrl = {
       const { quantityDistributed, commandId, articleId } = req.body;
       const distribution = await Distributions.findOne({ where: { id: id } });
       if (!distribution) {
-        return res.status(404).json({ msg: "Non trouvée" });
+        return res.status(404).json({ msg: 'Non trouvée' });
       }
       if (quantityDistributed === 0 || articleId === 0 || commandId === 0)
         return res
           .status(400)
-          .json({ msg: "Veuillez remplir les champs vide." });
+          .json({ msg: 'Veuillez remplir les champs vide.' });
 
       if (quantityDistributed < 0)
         return res.status(400).json({
@@ -95,7 +104,7 @@ const distributionCtrl = {
           },
           { where: { id: id } }
         );
-      res.json({ msg: "Mise à jour réussie !" });
+      res.json({ msg: 'Mise à jour réussie !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
@@ -108,10 +117,10 @@ const distributionCtrl = {
         where: { id: id },
       });
       if (!distributionById) {
-        return res.status(404).json({ msg: "Non trouvée" });
+        return res.status(404).json({ msg: 'Non trouvée' });
       }
       await Distributions.destroy({ where: { id: id } });
-      res.json({ msg: "Supprimé avec succès !" });
+      res.json({ msg: 'Supprimé avec succès !' });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
