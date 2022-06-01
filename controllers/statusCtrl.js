@@ -34,7 +34,7 @@ const statusController = {
   getAll: async (req, res) => {
     try {
       const statuss = await Status.findAll({
-        include: [{ model: Commands, include: { model: Articles } }],
+        include: Commands,
       });
       if (statuss) {
         res.json(statuss);
