@@ -211,7 +211,9 @@ const userCtrl = {
     try {
       const { role } = req.body;
       await Users.update({ role }, { where: { id: req.params.id } });
-      res.json({ msg: "L'utilisateur a été désactivé !" });
+      res.json({
+        msg: `L'utlisateur a été ${role < 0 ? 'désactiver' : activer}`,
+      });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
