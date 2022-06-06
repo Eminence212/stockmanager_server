@@ -79,7 +79,10 @@ const userCtrl = {
       if (!isMatch)
         return res.status(400).json({ msg: 'Le mot de passe est incorrect.' });
       if (user.role < 0)
-        return res.status(400).json({ msg: `${user.name} n'est pas autorisé d'utilisé la plate forme car il est désactivé.` });
+        return res.status(400).json({
+          msg: `${user.name} n'est pas autorisé d'utilisé la plate forme car il est désactivé.`,
+        });
+
       const refresh_token = createRefreshToken({ id: user.id });
       res.cookie('refreshtoken', refresh_token, {
         httpOnly: true,
