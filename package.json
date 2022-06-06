@@ -10,6 +10,10 @@
     "seeder": "npx sequelize-cli db:seed:all",
     "populate": "yarn run migrate && yarn run seeder"
   },
+  "engines": {
+    "node": "16.14.2",
+    "npm": "8.5.0"
+  },
   "keywords": [],
   "author": "Eminence MULEMA",
   "license": "ISC",
